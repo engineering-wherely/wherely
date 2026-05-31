@@ -6,6 +6,7 @@ applications:
           commands:
             - corepack enable
             - pnpm install
+            - pnpm --filter lake-pukaki exec ampx generate outputs --branch $AWS_BRANCH --app-id $BACKEND_APP_ID --out-dir .
         build:
           commands:
             - pnpm --filter mount-cook run build
@@ -19,3 +20,24 @@ applications:
           - node_modules/**/*
       buildPath: /
     appRoot: apps/mount-cook
+  - backend:
+      phases:
+        build:
+          commands:
+            - corepack enable
+            - pnpm install --frozen-lockfile
+            - pnpm exec ampx pipeline-deploy --branch $AWS_BRANCH --app-id $AWS_APP_ID
+    frontend:
+      phases:
+        build:
+          commands:
+            - mkdir ./dist && touch ./dist/index.html
+      artifacts:
+        baseDirectory: dist
+        files:
+          - "**/*"
+      cache:
+        paths:
+          - node_modules/**/*
+      buildPath: packages/lake-pukaki
+    appRoot: packages/lake-pukaki
