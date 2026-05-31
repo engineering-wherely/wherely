@@ -1,0 +1,21 @@
+version: 1
+applications:
+  - frontend:
+      phases:
+        preBuild:
+          commands:
+            - corepack enable
+            - pnpm install
+        build:
+          commands:
+            - pnpm --filter mount-cook run build
+      artifacts:
+        baseDirectory: apps/mount-cook/.next
+        files:
+          - "**/*"
+      cache:
+        paths:
+          - apps/mount-cook/.next/cache/**/*
+          - node_modules/**/*
+      buildPath: /
+    appRoot: apps/mount-cook
