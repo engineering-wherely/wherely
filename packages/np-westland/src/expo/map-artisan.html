@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Map Artisan</title>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <meta
+      name="description"
+      content="This page is designed for an Expo app utilizing the Map Artisan component."
+    />
+    <meta
+      name="author"
+      content="Matthew Gong"
+    />
+    <link
+      rel="icon"
+      href="./map-artisan.ico"
+      type="image/x-icon"
+    />
+    <link
+      rel="stylesheet"
+      href="/src/index.css"
+    />
+  </head>
+  <body class="w-screen h-screen">
+    <div
+      id="map-container"
+      class="w-full h-full"
+    ></div>
+    <script type="module">
+      import React from 'react';
+      import ReactDOM from 'react-dom/client';
+      import MapArtisan from '../components/mapping/MapArtisan';
+
+      const mapArtisan = React.createElement(MapArtisan, {});
+      ReactDOM.createRoot(document.getElementById('map-container')).render(mapArtisan);
+    </script>
+  </body>
+</html>
