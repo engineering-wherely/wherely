@@ -3,7 +3,6 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import Link from 'next/link';
 import './globals.css';
-import styles from './layout.module.css';
 
 import ConfigureAmplifyClientSide from '@/components/ConfigureAmplify';
 import Logout from '@/components/auth/logout/Logout';
@@ -24,12 +23,12 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <ConfigureAmplifyClientSide />
-        <div className={styles.container}>
-          <div className={styles.navBar}>
+        <div className="flex h-full flex-col">
+          <div className="h-[100px]">
             <Logout />
             <Link href="/map-layout-editor">Map Layout Editor</Link>
           </div>
-          <div className={styles.contentContainer}>{children}</div>
+          <div className="relative flex-1">{children}</div>
         </div>
       </body>
     </html>
