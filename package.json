@@ -4,8 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "aws:sandbox:start": "cd packages/lake-pukaki && pnpm dlx ampx sandbox --profile AmplifySet-wherely.dev",
-    "aws:sso:refresh": "aws sso login --profile AmplifySet-wherely.dev",
+    "aws:sandbox:start": "pnpm --filter lake-pukaki sandbox",
     "delete:node_modules": "find . -name \"node_modules\" -type d -prune -exec rm -rf '{}' +"
   },
   "keywords": [],

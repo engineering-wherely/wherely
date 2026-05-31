@@ -4,7 +4,7 @@
   "description": "AWS Amplify Gen 2 based backend app",
   "main": "index.js",
   "scripts": {
-    "sandbox": "ampx sandbox --profile amplify-lake-pukaki"
+    "sandbox": "ampx sandbox --profile $AWS_PROFILE"
   },
   "keywords": [],
   "author": "",
