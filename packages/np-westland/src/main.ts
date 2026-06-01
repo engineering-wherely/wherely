@@ -1,7 +1,7 @@
-import './index.css';
+import '@/index.css';
 
 // shadcn/ui components
-export { Button, buttonVariants } from './components/ui/button';
+export { Button, buttonVariants } from '@/components/ui/button';
 
 // homemade components
-export { default as MapArtisan } from './components/mapping/MapArtisan';
+export { default as MapArtisan } from '@/components/mapping/MapArtisan';
