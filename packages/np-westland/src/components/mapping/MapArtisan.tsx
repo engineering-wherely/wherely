@@ -1,10 +1,11 @@
 import { Map, View } from 'ol';
-import { Coordinate } from 'ol/coordinate';
+import type { Coordinate } from 'ol/coordinate';
 import { Tile as TileLayer } from 'ol/layer';
 import 'ol/ol.css';
 import { fromLonLat } from 'ol/proj';
 import { OSM } from 'ol/source';
 import { useEffect, useRef } from 'react';
+import { Autocomplete } from '@/components/autocomplete/Autocomplete';
 
 type GeographicCoordinate = Coordinate;
 type MapArtisanProps = {
@@ -37,10 +38,15 @@ export default function MapArtisan({ zoom, center }: MapArtisanProps) {
   }, [zoom, _center]);
 
   return (
-    <div
-      ref={targetRef}
-      id='map'
-      className='w-full h-full'
-    ></div>
+    <div className='relative w-full h-full'>
+      <div
+        ref={targetRef}
+        id='map'
+        className='w-full h-full'
+      ></div>
+      <div className='absolute left-1/2 top-4 z-10 w-full max-w-sm -translate-x-1/2 px-4'>
+        <Autocomplete options={[]} />
+      </div>
+    </div>
   );
 }
