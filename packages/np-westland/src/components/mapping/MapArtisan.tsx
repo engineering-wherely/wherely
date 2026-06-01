@@ -1,11 +1,20 @@
 import { Map, View } from 'ol';
+import { Coordinate } from 'ol/coordinate';
 import { Tile as TileLayer } from 'ol/layer';
 import 'ol/ol.css';
+import { fromLonLat } from 'ol/proj';
 import { OSM } from 'ol/source';
 import { useEffect, useRef } from 'react';
 
-export default function MapArtisan() {
+type GeographicCoordinate = Coordinate;
+type MapArtisanProps = {
+  zoom: number;
+  center: GeographicCoordinate;
+};
+
+export default function MapArtisan({ zoom, center }: MapArtisanProps) {
   const targetRef = useRef<HTMLDivElement>(null);
+  const _center = fromLonLat(center, 'EPSG:3857');
 
   useEffect(() => {
     const target = targetRef.current!;
@@ -17,15 +26,15 @@ export default function MapArtisan() {
         }),
       ],
       view: new View({
-        center: [0, 0],
-        zoom: 2,
+        center: _center,
+        zoom,
       }),
     });
 
     return () => {
       map.setTarget(undefined);
     };
-  }, []);
+  }, [zoom, _center]);
 
   return (
     <div

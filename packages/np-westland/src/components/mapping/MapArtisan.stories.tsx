@@ -20,5 +20,8 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
-  args: {},
+  args: {
+    zoom: 14,
+    center: [172.62, -43.53],
+  },
 };
