@@ -5,7 +5,10 @@ import path, { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import dts from 'vite-plugin-dts';
 import { libInjectCss } from 'vite-plugin-lib-inject-css';
+import tsconfigPaths from 'vite-tsconfig-paths';
 import { defineConfig } from 'vitest/config';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -17,6 +20,7 @@ export default defineConfig({
       exclude: ['**/*.stories.tsx', 'src/test', '**/*.test.tsx'],
     }),
     tailwindcss(),
+    tsconfigPaths(),
   ],
   build: {
     lib: {
@@ -54,11 +58,6 @@ export default defineConfig({
     coverage: {
       include: ['src/components'],
       exclude: ['**/*.stories.tsx'],
-    },
-  },
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, './src'),
     },
   },
 });
