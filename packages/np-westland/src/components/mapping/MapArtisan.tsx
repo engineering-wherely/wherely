@@ -1,3 +1,4 @@
+import { GeocodingInput } from '@/components/mapping/GeocodingInput';
 import { Map, View } from 'ol';
 import type { Coordinate } from 'ol/coordinate';
 import { Tile as TileLayer } from 'ol/layer';
@@ -5,7 +6,6 @@ import 'ol/ol.css';
 import { fromLonLat } from 'ol/proj';
 import { OSM } from 'ol/source';
 import { useEffect, useRef } from 'react';
-import { Autocomplete } from '@/components/autocomplete/Autocomplete';
 
 type GeographicCoordinate = Coordinate;
 type MapArtisanProps = {
@@ -45,7 +45,7 @@ export default function MapArtisan({ zoom, center }: MapArtisanProps) {
         className='w-full h-full'
       ></div>
       <div className='absolute left-1/2 top-4 z-10 w-full max-w-sm -translate-x-1/2 px-4'>
-        <Autocomplete options={[]} />
+        <GeocodingInput />
       </div>
     </div>
   );
