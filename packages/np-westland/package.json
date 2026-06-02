@@ -25,6 +25,7 @@
     "coverage": "vitest run --coverage"
   },
   "dependencies": {
+    "@base-ui/react": "^1.5.0",
     "@fontsource-variable/geist": "^5.2.9",
     "@radix-ui/react-slot": "^1.2.0",
     "class-variance-authority": "^0.7.1",
