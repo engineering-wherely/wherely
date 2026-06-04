@@ -1,6 +1,7 @@
 'use client';
 
 import { Autocomplete as AutocompletePrimitive } from '@base-ui/react/autocomplete';
+import { ChevronDownIcon, XIcon } from 'lucide-react';
 import type * as React from 'react';
 
 import { cn } from '@/lib/utils';
@@ -71,19 +72,7 @@ function AutocompleteTrigger({
       )}
       {...props}
     >
-      {children ?? (
-        <svg
-          viewBox='0 0 24 24'
-          fill='none'
-          stroke='currentColor'
-          strokeWidth='2'
-          strokeLinecap='round'
-          strokeLinejoin='round'
-          aria-hidden='true'
-        >
-          <path d='m6 9 6 6 6-6' />
-        </svg>
-      )}
+      {children ?? <ChevronDownIcon />}
     </AutocompletePrimitive.Trigger>
   );
 }
@@ -112,19 +101,7 @@ function AutocompleteClear({
       )}
       {...props}
     >
-      {children ?? (
-        <svg
-          viewBox='0 0 24 24'
-          fill='none'
-          stroke='currentColor'
-          strokeWidth='2'
-          strokeLinecap='round'
-          strokeLinejoin='round'
-          aria-hidden='true'
-        >
-          <path d='M18 6 6 18M6 6l12 12' />
-        </svg>
-      )}
+      {children ?? <XIcon />}
     </AutocompletePrimitive.Clear>
   );
 }
