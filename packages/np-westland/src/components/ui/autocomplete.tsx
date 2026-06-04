@@ -33,7 +33,7 @@ function AutocompleteInputGroup({
     <AutocompletePrimitive.InputGroup
       data-slot='autocomplete-input-group'
       className={cn(
-        'flex h-8 w-full items-center rounded-lg border border-input bg-transparent text-sm shadow-xs transition-[color,box-shadow] outline-none focus-within:border-ring focus-within:ring-3 focus-within:ring-ring/50 has-aria-invalid:border-destructive has-aria-invalid:ring-3 has-aria-invalid:ring-destructive/20 dark:bg-input/30 dark:has-aria-invalid:ring-destructive/40',
+        'flex h-8 w-full items-center rounded-lg border bg-popover text-popover-foreground text-sm shadow-xs transition-[color,box-shadow] outline-none focus-within:border-ring focus-within:ring-3 focus-within:ring-ring/50 has-aria-invalid:border-destructive has-aria-invalid:ring-3 has-aria-invalid:ring-destructive/20 dark:has-aria-invalid:ring-destructive/40',
         className
       )}
       {...props}
@@ -192,7 +192,7 @@ function AutocompleteEmpty({
   return (
     <AutocompletePrimitive.Empty
       data-slot='autocomplete-empty'
-      className={cn('px-2 py-6 text-center text-sm text-muted-foreground', className)}
+      className={cn('px-2 py-6 text-center text-sm text-muted-foreground empty:p-0', className)}
       {...props}
     />
   );
