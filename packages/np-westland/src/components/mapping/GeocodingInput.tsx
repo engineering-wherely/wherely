@@ -3,13 +3,13 @@
 import {
   Autocomplete,
   AutocompleteClear,
-  AutocompleteContent,
   AutocompleteEmpty,
   AutocompleteInput,
   AutocompleteInputGroup,
   AutocompleteItem,
   AutocompleteList,
   AutocompletePortal,
+  AutocompletePopup,
   AutocompletePositioner,
 } from '@/components/ui/autocomplete';
 
@@ -31,7 +31,7 @@ export function GeocodingInput() {
 
       <AutocompletePortal>
         <AutocompletePositioner>
-          <AutocompleteContent>
+          <AutocompletePopup>
             <AutocompleteEmpty>No items found.</AutocompleteEmpty>
             <AutocompleteList>
               {(item: string) => (
@@ -43,7 +43,7 @@ export function GeocodingInput() {
                 </AutocompleteItem>
               )}
             </AutocompleteList>
-          </AutocompleteContent>
+          </AutocompletePopup>
         </AutocompletePositioner>
       </AutocompletePortal>
     </Autocomplete>

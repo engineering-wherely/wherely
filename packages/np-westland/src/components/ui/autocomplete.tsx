@@ -146,13 +146,13 @@ function AutocompletePositioner({
   );
 }
 
-function AutocompleteContent({
+function AutocompletePopup({
   className,
   ...props
 }: StyledProps<typeof AutocompletePrimitive.Popup>) {
   return (
     <AutocompletePrimitive.Popup
-      data-slot='autocomplete-content'
+      data-slot='autocomplete-popup'
       className={cn(
         'max-h-[var(--available-height)] min-w-[var(--anchor-width)] overflow-hidden rounded-lg border bg-popover text-popover-foreground shadow-md outline-none transition-[transform,scale,opacity] data-[ending-style]:scale-95 data-[ending-style]:opacity-0 data-[starting-style]:scale-95 data-[starting-style]:opacity-0',
         className
@@ -298,7 +298,6 @@ export {
   AutocompleteBackdrop,
   AutocompleteClear,
   AutocompleteCollection,
-  AutocompleteContent,
   AutocompleteEmpty,
   AutocompleteGroup,
   AutocompleteGroupLabel,
@@ -308,6 +307,7 @@ export {
   AutocompleteItem,
   AutocompleteList,
   AutocompletePortal,
+  AutocompletePopup,
   AutocompletePositioner,
   AutocompleteRow,
   AutocompleteSeparator,
