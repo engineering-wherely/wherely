@@ -15,10 +15,17 @@ import {
 
 const frameworks = ['Next.js', 'SvelteKit', 'Nuxt.js', 'Remix', 'Astro'];
 
-export function GeocodingInput() {
+type GeocodingInputProps = {
+  location: string;
+  onLocationChange: (location: string) => void;
+};
+
+export function GeocodingInput({ location, onLocationChange }: GeocodingInputProps) {
   return (
     <Autocomplete
       items={frameworks}
+      value={location}
+      onValueChange={onLocationChange}
       openOnInputClick
     >
       <AutocompleteInputGroup>

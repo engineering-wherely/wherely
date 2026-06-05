@@ -45,7 +45,10 @@ export default function MapArtisan({ zoom, center }: MapArtisanProps) {
         className='w-full h-full'
       ></div>
       <div className='absolute left-1/2 top-4 z-10 w-full max-w-sm -translate-x-1/2 px-4'>
-        <GeocodingInput />
+        <GeocodingInput
+          location=''
+          onLocationChange={() => {}}
+        />
       </div>
     </div>
   );
