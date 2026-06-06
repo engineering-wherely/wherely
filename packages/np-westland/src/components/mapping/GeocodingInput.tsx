@@ -8,22 +8,33 @@ import {
   AutocompleteInputGroup,
   AutocompleteItem,
   AutocompleteList,
-  AutocompletePortal,
   AutocompletePopup,
+  AutocompletePortal,
   AutocompletePositioner,
 } from '@/components/ui/autocomplete';
-
-const frameworks = ['Next.js', 'SvelteKit', 'Nuxt.js', 'Remix', 'Astro'];
+import { useContext, useState } from 'react';
+import { MappingContext } from './MappingContext';
 
 type GeocodingInputProps = {
   location: string;
-  onLocationChange: (location: string) => void;
 };
 
-export function GeocodingInput({ location, onLocationChange }: GeocodingInputProps) {
+export function GeocodingInput({ location }: GeocodingInputProps) {
+  const mappingService = useContext(MappingContext);
+  const [result, setResult] = useState<unknown[]>([]);
+
+  async function onLocationChange(value: string) {
+    if (!mappingService) {
+      return [];
+    }
+
+    const foo = await mappingService.geocode(value);
+    setResult(foo);
+  }
+
   return (
     <Autocomplete
-      items={frameworks}
+      items={result}
       value={location}
       onValueChange={onLocationChange}
       openOnInputClick
