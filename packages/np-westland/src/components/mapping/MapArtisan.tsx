@@ -1,4 +1,5 @@
 import { GeocodingInput } from '@/components/mapping/GeocodingInput';
+import { useGeocoding } from '@/hooks/mapping/useGeocoding';
 import { Map, View } from 'ol';
 import type { Coordinate } from 'ol/coordinate';
 import { Tile as TileLayer } from 'ol/layer';
@@ -16,6 +17,7 @@ type MapArtisanProps = {
 export default function MapArtisan({ zoom, center }: MapArtisanProps) {
   const targetRef = useRef<HTMLDivElement>(null);
   const _center = fromLonLat(center, 'EPSG:3857');
+  const { location, result, setLocation } = useGeocoding();
 
   useEffect(() => {
     const target = targetRef.current!;
@@ -45,7 +47,13 @@ export default function MapArtisan({ zoom, center }: MapArtisanProps) {
         className='w-full h-full'
       ></div>
       <div className='absolute left-1/2 top-4 z-10 w-full max-w-sm -translate-x-1/2 px-4'>
-        <GeocodingInput location='' />
+        <GeocodingInput
+          location={location}
+          result={result}
+          onLocationChange={(location) => {
+            setLocation(location);
+          }}
+        />
       </div>
     </div>
   );

@@ -12,26 +12,14 @@ import {
   AutocompletePortal,
   AutocompletePositioner,
 } from '@/components/ui/autocomplete';
-import { useContext, useState } from 'react';
-import { MappingContext } from './MappingContext';
 
 type GeocodingInputProps = {
   location: string;
+  result: unknown[];
+  onLocationChange: (location: string) => void;
 };
 
-export function GeocodingInput({ location }: GeocodingInputProps) {
-  const mappingService = useContext(MappingContext);
-  const [result, setResult] = useState<unknown[]>([]);
-
-  async function onLocationChange(value: string) {
-    if (!mappingService) {
-      return [];
-    }
-
-    const foo = await mappingService.geocode(value);
-    setResult(foo);
-  }
-
+export function GeocodingInput({ location, result, onLocationChange }: GeocodingInputProps) {
   return (
     <Autocomplete
       items={result}
