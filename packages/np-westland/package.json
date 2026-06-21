@@ -77,7 +77,8 @@
     "vite-plugin-dts": "^4.5.3",
     "vite-plugin-lib-inject-css": "^2.2.2",
     "vite-tsconfig-paths": "^6.1.1",
-    "vitest": "^3.1.1"
+    "vitest": "^3.1.1",
+    "zustand": "^5.0.14"
   },
   "eslintConfig": {
     "extends": [
@@ -86,6 +87,7 @@
   },
   "peerDependencies": {
     "react": "^19.2.5",
-    "react-dom": "^19.2.5"
+    "react-dom": "^19.2.5",
+    "zustand": "^5.0.14"
   }
 }
