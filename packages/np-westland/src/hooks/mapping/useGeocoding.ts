@@ -3,12 +3,10 @@ import { useEffect } from 'react';
 
 export function useGeocoding() {
   const service = useMappingService();
-  const { location, setLocation, result, setResult } = useMappingStore((s) => ({
-    location: s.location,
-    setLocation: s.setLocation,
-    result: s.result,
-    setResult: s.setResult,
-  }));
+  const location = useMappingStore((s) => s.location);
+  const setLocation = useMappingStore((s) => s.setLocation);
+  const result = useMappingStore((s) => s.result);
+  const setResult = useMappingStore((s) => s.setResult);
 
   useEffect(() => {
     async function startFetching() {
