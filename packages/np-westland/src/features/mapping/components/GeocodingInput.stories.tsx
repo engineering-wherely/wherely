@@ -1,4 +1,4 @@
-import { GeocodingInput } from '@/components/mapping/GeocodingInput';
+import { GeocodingInput } from '@/features/mapping/components/GeocodingInput';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 const meta = {

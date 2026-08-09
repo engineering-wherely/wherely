@@ -1,5 +1,5 @@
-import { GeocodingInput } from '@/components/mapping/GeocodingInput';
-import { useGeocoding } from '@/hooks/mapping/useGeocoding';
+import { GeocodingInput } from '@/features/mapping/components/GeocodingInput';
+import { useGeocoding } from '@/features/mapping/hooks/useGeocoding';
 import { Map, View } from 'ol';
 import type { Coordinate } from 'ol/coordinate';
 import { Tile as TileLayer } from 'ol/layer';

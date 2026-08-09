@@ -1,5 +1,5 @@
-import type { MappingService } from '@/services/mapping/service';
-import type { MappingStore, MappingStoreApi } from '@/stores/mapping/store';
+import type { MappingService } from '@/features/mapping/services/service';
+import type { MappingStore, MappingStoreApi } from '@/features/mapping/stores/store';
 import type { Optional } from '@/types';
 import { createContext, useContext } from 'react';
 import { useStore } from 'zustand';

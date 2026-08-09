@@ -1,4 +1,4 @@
-import { useMappingService, useMappingStore } from '@/contexts/mapping/MappingContext';
+import { useMappingService, useMappingStore } from '@/features/mapping/contexts/MappingContext';
 import { useEffect } from 'react';
 
 export function useGeocoding() {

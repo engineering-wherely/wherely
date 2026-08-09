@@ -11,7 +11,7 @@ import {
   AutocompletePopup,
   AutocompletePortal,
   AutocompletePositioner,
-} from '@/components/ui/autocomplete';
+} from '@/shared/components/ui/autocomplete';
 
 type GeocodingInputProps = {
   location: string;

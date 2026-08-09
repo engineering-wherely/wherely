@@ -1,4 +1,4 @@
-import MapArtisan from '@/components/mapping/MapArtisan';
+import MapArtisan from '@/features/mapping/components/MapArtisan';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 const meta = {
