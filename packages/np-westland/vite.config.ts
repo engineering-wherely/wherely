@@ -24,13 +24,16 @@ export default defineConfig({
   ],
   build: {
     lib: {
-      entry: resolve(__dirname, 'src/main.ts'),
+      entry: {
+        main: resolve(__dirname, 'src/main.ts'),
+        utils: resolve(__dirname, 'src/utils.ts'),
+      },
       formats: ['es'],
     },
     rollupOptions: {
       external: ['react', 'react-dom', 'react/jsx-runtime'],
       input: Object.fromEntries(
-        globSync(['src/components/**/index.tsx', 'src/main.ts']).map((file) => {
+        globSync(['src/components/**/index.tsx', 'src/main.ts', 'src/utils.ts']).map((file) => {
           const entryName = path.relative(
             'src',
             file.slice(0, file.length - path.extname(file).length)

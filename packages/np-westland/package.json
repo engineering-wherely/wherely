@@ -7,7 +7,16 @@
   "files": [
     "dist"
   ],
-  "exports": "./dist/main.js",
+  "exports": {
+    ".": {
+      "types": "./dist/main.d.ts",
+      "import": "./dist/main.js"
+    },
+    "./utils": {
+      "types": "./dist/utils.d.ts",
+      "import": "./dist/utils.js"
+    }
+  },
   "module": "./dist/main.js",
   "types": "./dist/main.d.ts",
   "scripts": {
