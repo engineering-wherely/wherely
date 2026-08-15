@@ -6,7 +6,8 @@
     "dev": "NODE_OPTIONS=--max-old-space-size=8192 next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "clean:next-cache": "rm -rf .next"
   },
   "dependencies": {
     "@aws-amplify/adapter-nextjs": "^1.6.0",

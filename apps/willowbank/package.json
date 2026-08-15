@@ -7,7 +7,8 @@
     "dev:turbopack": "next dev --turbopack --experimental-https",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "clean:next-cache": "rm -rf .next"
   },
   "dependencies": {
     "@redux-devtools/extension": "^4.0.0",
