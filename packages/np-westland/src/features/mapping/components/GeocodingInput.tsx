@@ -11,7 +11,7 @@ import {
   AutocompletePopup,
   AutocompletePortal,
   AutocompletePositioner,
-} from '@/shared/components/ui/autocomplete';
+} from '@/shadcn-ui/components/ui/autocomplete';
 
 type GeocodingInputProps = {
   location: string;

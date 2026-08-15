@@ -4,7 +4,7 @@ import { Autocomplete as AutocompletePrimitive } from '@base-ui/react/autocomple
 import { ChevronDownIcon, XIcon } from 'lucide-react';
 import type * as React from 'react';
 
-import { cn } from '@/shared/lib/utils';
+import { cn } from '@/shadcn-ui/lib/utils';
 
 type StyledProps<T extends React.ElementType> = Omit<React.ComponentProps<T>, 'className'> & {
   className?: string;
