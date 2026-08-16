@@ -23,5 +23,6 @@ export const Primary: Story = {
   args: {
     zoom: 14,
     center: [172.62, -43.53],
+    projection: 'EPSG:3857',
   },
 };

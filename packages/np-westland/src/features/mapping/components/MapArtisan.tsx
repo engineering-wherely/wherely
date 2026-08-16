@@ -1,22 +1,22 @@
 import { GeocodingInput } from '@/features/mapping/components/GeocodingInput';
 import { useGeocoding } from '@/features/mapping/hooks/useGeocoding';
+import type { GeographicCoordinate } from '@/features/mapping/types';
 import { Map, View } from 'ol';
-import type { Coordinate } from 'ol/coordinate';
 import { Tile as TileLayer } from 'ol/layer';
 import 'ol/ol.css';
-import { fromLonLat } from 'ol/proj';
+import { fromLonLat, ProjectionLike } from 'ol/proj';
 import { OSM } from 'ol/source';
-import { useEffect, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 
-type GeographicCoordinate = Coordinate;
 type MapArtisanProps = {
   zoom: number;
   center: GeographicCoordinate;
+  projection: ProjectionLike;
 };
 
-export default function MapArtisan({ zoom, center }: MapArtisanProps) {
+export default function MapArtisan({ zoom, center, projection }: MapArtisanProps) {
   const targetRef = useRef<HTMLDivElement>(null);
-  const _center = fromLonLat(center, 'EPSG:3857');
+  const _center = useMemo(() => fromLonLat(center, projection), [center, projection]);
   const { location, result, setLocation } = useGeocoding();
 
   useEffect(() => {
@@ -31,13 +31,14 @@ export default function MapArtisan({ zoom, center }: MapArtisanProps) {
       view: new View({
         center: _center,
         zoom,
+        projection,
       }),
     });
 
     return () => {
       map.setTarget(undefined);
     };
-  }, [zoom, _center]);
+  }, [zoom, _center, projection]);
 
   return (
     <div className='relative w-full h-full'>
