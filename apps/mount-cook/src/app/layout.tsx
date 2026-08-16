@@ -3,6 +3,8 @@ import Header from '@/app/components/Header';
 import '@aws-amplify/ui-react/styles.css';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
+import 'np-westland/style.css';
+import { cn } from 'np-westland/utils';
 import './globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -19,7 +21,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={cn(inter.className, 'isolate')}>
         <ConfigureAmplifyClientSide />
         <div className="flex h-full flex-col">
           <Header />

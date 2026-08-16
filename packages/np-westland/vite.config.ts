@@ -9,6 +9,12 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 import { defineConfig } from 'vitest/config';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const libraryEntries = {
+  'client-components': resolve(__dirname, 'src/client-components.ts'),
+  slices: resolve(__dirname, 'src/slices.ts'),
+  types: resolve(__dirname, 'src/types.ts'),
+  utils: resolve(__dirname, 'src/utils.ts'),
+};
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -24,27 +30,29 @@ export default defineConfig({
   ],
   build: {
     lib: {
-      entry: {
-        main: resolve(__dirname, 'src/main.ts'),
-        utils: resolve(__dirname, 'src/utils.ts'),
-      },
+      entry: libraryEntries,
       formats: ['es'],
     },
     rollupOptions: {
       external: ['react', 'react-dom', 'react/jsx-runtime'],
-      input: Object.fromEntries(
-        globSync(['src/components/**/index.tsx', 'src/main.ts', 'src/utils.ts']).map((file) => {
-          const entryName = path.relative(
-            'src',
-            file.slice(0, file.length - path.extname(file).length)
-          );
-          const entryUrl = fileURLToPath(new URL(file, import.meta.url));
-          return [entryName, entryUrl];
-        })
-      ),
+      input: {
+        ...libraryEntries,
+        style: resolve(__dirname, 'src/style.css'),
+        ...Object.fromEntries(
+          globSync(['src/components/**/index.tsx']).map((file) => {
+            const entryName = path.relative(
+              'src',
+              file.slice(0, file.length - path.extname(file).length)
+            );
+            const entryUrl = fileURLToPath(new URL(file, import.meta.url));
+            return [entryName, entryUrl];
+          })
+        ),
+      },
       output: {
         entryFileNames: '[name].js',
-        assetFileNames: 'assets/[name][extname]',
+        assetFileNames: (assetInfo) =>
+          assetInfo.names?.includes('style.css') ? '[name][extname]' : 'assets/[name][extname]',
         globals: {
           react: 'React',
           'react-dom': 'React-dom',

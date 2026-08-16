@@ -1,4 +1,4 @@
-import type { MappingService } from 'np-westland';
+import type { MappingService } from 'np-westland/types';
 
 type GeocodingApiResponse = {
   results?: unknown[];
