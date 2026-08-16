@@ -17,6 +17,10 @@
       "import": "./dist/client-components.js"
     },
     "./style.css": "./dist/style.css",
+    "./hooks": {
+      "types": "./dist/hooks.d.ts",
+      "import": "./dist/hooks.js"
+    },
     "./slices": {
       "types": "./dist/slices.d.ts",
       "import": "./dist/slices.js"

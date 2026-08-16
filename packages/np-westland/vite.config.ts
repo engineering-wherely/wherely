@@ -11,6 +11,7 @@ import { defineConfig } from 'vitest/config';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const libraryEntries = {
   'client-components': resolve(__dirname, 'src/client-components.ts'),
+  hooks: resolve(__dirname, 'src/hooks.ts'),
   slices: resolve(__dirname, 'src/slices.ts'),
   types: resolve(__dirname, 'src/types.ts'),
   utils: resolve(__dirname, 'src/utils.ts'),

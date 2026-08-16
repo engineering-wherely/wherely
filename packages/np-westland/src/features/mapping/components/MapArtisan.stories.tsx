@@ -1,4 +1,5 @@
 import MapArtisan from '@/features/mapping/components/MapArtisan';
+import { fromLonLat, toGeograhicCoordinate } from '@/features/mapping/utils';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 const meta = {
@@ -22,7 +23,7 @@ type Story = StoryObj<typeof meta>;
 export const Primary: Story = {
   args: {
     zoom: 14,
-    center: [172.62, -43.53],
+    center: fromLonLat(toGeograhicCoordinate([172.62, -43.53]), 'EPSG:3857'),
     projection: 'EPSG:3857',
   },
 };

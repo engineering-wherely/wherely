@@ -1,9 +1,10 @@
-import { GeographicCoordinate } from '@/features/mapping/types';
+import { fromLonLat, toGeograhicCoordinate } from '@/features/mapping/utils';
+import { Coordinate } from 'ol/coordinate';
 import { ProjectionLike } from 'ol/proj';
 import { StateCreator } from 'zustand';
 
 export interface MappingSlice {
-  center: GeographicCoordinate;
+  center: Coordinate;
   zoom: number;
   projection: ProjectionLike;
   location: string;
@@ -13,7 +14,7 @@ export interface MappingSlice {
 }
 
 const createMappingSlice: StateCreator<MappingSlice, [], [], MappingSlice> = (set) => ({
-  center: [172.62, -43.53], // Hagley Park in Christchurch
+  center: fromLonLat(toGeograhicCoordinate([172.62, -43.53]), 'EPSG:3857'), // Hagley Park in Christchurch
   zoom: 14,
   projection: 'EPSG:3857',
   location: '',
