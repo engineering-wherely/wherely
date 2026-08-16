@@ -13,9 +13,10 @@ type MapArtisanProps = {
   zoom: number;
   center: Coordinate;
   projection: ProjectionLike;
+  onCenterChanged: (center: Coordinate) => void;
 };
 
-export default function MapArtisan({ zoom, center, projection }: MapArtisanProps) {
+export default function MapArtisan({ zoom, center, projection, onCenterChanged }: MapArtisanProps) {
   const targetRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<Map>(null);
   const viewStateRef = useRef({ center, zoom });
@@ -86,10 +87,10 @@ export default function MapArtisan({ zoom, center, projection }: MapArtisanProps
       );
       const view = map.getView();
       view.on('change:center', (event) => {
-        console.log(event.target.getCenter());
+        onCenterChanged(event.target.getCenter());
       });
     }
-  }, [projection, previousProjection]);
+  }, [projection, previousProjection, onCenterChanged]);
 
   return (
     <div className='relative w-full h-full'>

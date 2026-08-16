@@ -9,6 +9,7 @@ export interface MappingSlice {
   projection: ProjectionLike;
   location: string;
   result: unknown[];
+  setCenter: (c: Coordinate) => void;
   setLocation: (location: string) => void;
   setResult: (result: unknown[]) => void;
 }
@@ -19,6 +20,7 @@ const createMappingSlice: StateCreator<MappingSlice, [], [], MappingSlice> = (se
   projection: 'EPSG:3857',
   location: '',
   result: [],
+  setCenter: (c) => set({ center: c }),
   setLocation: (location) => set({ location }),
   setResult: (result) => set({ result }),
 });
