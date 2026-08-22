@@ -3,7 +3,9 @@ import { useGeocoding } from '@/features/mapping/hooks/useGeocoding';
 import { usePrevious } from '@/hooks';
 import { Map, View } from 'ol';
 import { Coordinate } from 'ol/coordinate';
+import { EventsKey } from 'ol/events';
 import { Tile as TileLayer } from 'ol/layer';
+import { unByKey } from 'ol/Observable';
 import 'ol/ol.css';
 import { equivalent, get as getProjection, ProjectionLike } from 'ol/proj';
 import { OSM } from 'ol/source';
@@ -13,10 +15,10 @@ type MapArtisanProps = {
   zoom: number;
   center: Coordinate;
   projection: ProjectionLike;
-  onCenterChanged: (center: Coordinate) => void;
+  listeners: { onCenterChanged: (center: Coordinate) => void };
 };
 
-export default function MapArtisan({ zoom, center, projection, onCenterChanged }: MapArtisanProps) {
+export default function MapArtisan({ zoom, center, projection, listeners }: MapArtisanProps) {
   const targetRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<Map>(null);
   const viewStateRef = useRef({ center, zoom });
@@ -85,12 +87,22 @@ export default function MapArtisan({ zoom, center, projection, onCenterChanged }
           projection,
         })
       );
-      const view = map.getView();
+    }
+
+    const view = map.getView();
+    const { onCenterChanged } = listeners;
+    const keys: EventsKey[] = [];
+    keys.push(
       view.on('change:center', (event) => {
         onCenterChanged(event.target.getCenter());
-      });
-    }
-  }, [projection, previousProjection, onCenterChanged]);
+      }) as EventsKey
+    );
+    return () => {
+      for (const k of keys) {
+        unByKey(k);
+      }
+    };
+  }, [projection, previousProjection, listeners]);
 
   return (
     <div className='relative w-full h-full'>

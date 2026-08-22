@@ -25,6 +25,6 @@ export const Primary: Story = {
     zoom: 14,
     center: fromLonLat(toGeograhicCoordinate([172.62, -43.53]), 'EPSG:3857'),
     projection: 'EPSG:3857',
-    onCenterChanged: () => {},
+    listeners: { onCenterChanged: () => {} },
   },
 };
