@@ -21,7 +21,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={cn(inter.className, 'isolate')}>
+      <body className={cn(inter.className, 'isolate')} suppressHydrationWarning>
         <ConfigureAmplifyClientSide />
         <div className="flex h-full flex-col">
           <Header />
