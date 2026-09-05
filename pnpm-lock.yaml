@@ -294,6 +294,9 @@ importers:
       '@eslint/js':
         specifier: ^9.25.0
         version: 9.25.0
+      '@googlemaps/google-maps-services-js':
+        specifier: ^3.4.2
+        version: 3.4.2
       '@storybook/addon-docs':
         specifier: ^10.4.1
         version: 10.4.1(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(esbuild@0.25.2)(rollup@4.40.0)(storybook@10.4.1(@testing-library/dom@10.4.0)(@types/react@19.2.14)(prettier@3.5.3)(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(vite@6.3.2(@types/node@22.14.1)(jiti@2.7.0)(lightningcss@1.32.0)(sass-embedded@1.100.0)(sass@1.100.0)(terser@5.39.0)(tsx@4.19.3))(webpack@5.99.6(esbuild@0.25.2))

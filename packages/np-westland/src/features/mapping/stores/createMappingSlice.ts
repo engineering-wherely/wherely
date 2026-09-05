@@ -1,4 +1,5 @@
 import { fromLonLat, toGeograhicCoordinate } from '@/features/mapping/utils';
+import type { GeocodeResult } from '@googlemaps/google-maps-services-js';
 import { Coordinate } from 'ol/coordinate';
 import { ProjectionLike } from 'ol/proj';
 import { StateCreator } from 'zustand';
@@ -8,10 +9,10 @@ export interface MappingSlice {
   zoom: number;
   projection: ProjectionLike;
   location: string;
-  result: unknown[];
+  result: GeocodeResult[];
   setCenter: (c: Coordinate) => void;
   setLocation: (location: string) => void;
-  setResult: (result: unknown[]) => void;
+  setResult: (result: GeocodeResult[]) => void;
 }
 
 const createMappingSlice: StateCreator<MappingSlice, [], [], MappingSlice> = (set) => ({

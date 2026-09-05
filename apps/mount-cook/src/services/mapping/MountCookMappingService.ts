@@ -1,7 +1,8 @@
+import type { GeocodeResult } from '@googlemaps/google-maps-services-js';
 import type { MappingService } from 'np-westland/types';
 
 type GeocodingApiResponse = {
-  results?: unknown[];
+  results?: GeocodeResult[];
   error?: string;
 };
 
@@ -13,7 +14,7 @@ const defaultApiUrl =
 export class MountCookMappingService implements MappingService {
   constructor(private readonly apiUrl = defaultApiUrl) {}
 
-  async geocode(location: string): Promise<unknown[]> {
+  async geocode(location: string): Promise<GeocodeResult[]> {
     const trimmedLocation = location.trim();
 
     if (!trimmedLocation) {

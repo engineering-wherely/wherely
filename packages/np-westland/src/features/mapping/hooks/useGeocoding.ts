@@ -28,7 +28,7 @@ export function useGeocoding() {
     return () => {
       ignore = true;
     };
-  }, [service, location]);
+  }, [service, location, setResult]);
 
   return {
     location,

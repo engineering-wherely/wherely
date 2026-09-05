@@ -12,17 +12,19 @@ import {
   AutocompletePortal,
   AutocompletePositioner,
 } from '@/shadcn-ui/components/ui/autocomplete';
+import type { GeocodeResult } from '@googlemaps/google-maps-services-js';
 
 type GeocodingInputProps = {
   location: string;
-  result: unknown[];
+  result: GeocodeResult[];
   onLocationChange: (location: string) => void;
 };
 
 export function GeocodingInput({ location, result, onLocationChange }: GeocodingInputProps) {
+  const items = result.map((r) => r.formatted_address);
   return (
     <Autocomplete
-      items={result}
+      items={items}
       value={location}
       onValueChange={onLocationChange}
       openOnInputClick
