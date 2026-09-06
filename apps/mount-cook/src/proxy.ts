@@ -1,10 +1,12 @@
-import { NextRequest, NextResponse } from "next/server";
-
-import { fetchAuthSession } from "aws-amplify/auth/server";
-
-import { runWithAmplifyServerContext } from "@/utils/amplify-utils";
+import { runWithAmplifyServerContext } from '@/utils/amplify-utils';
+import { fetchAuthSession } from 'aws-amplify/auth/server';
+import { NextRequest, NextResponse } from 'next/server';
 
 export async function proxy(request: NextRequest) {
+  if (request.nextUrl.pathname === '/') {
+    return NextResponse.next();
+  }
+
   const response = NextResponse.next();
 
   const authenticated = await runWithAmplifyServerContext({
@@ -24,7 +26,7 @@ export async function proxy(request: NextRequest) {
     return response;
   }
 
-  return NextResponse.redirect(new URL("/login", request.url));
+  return NextResponse.redirect(new URL('/login', request.url));
 }
 
 export const config = {
@@ -37,6 +39,6 @@ export const config = {
      * - favicon.ico (favicon file)
      * - login
      */
-    "/((?!api|_next/static|_next/image|favicon.ico|login).*)",
+    '/((?!api|_next/static|_next/image|favicon.ico|login).*)',
   ],
 };
