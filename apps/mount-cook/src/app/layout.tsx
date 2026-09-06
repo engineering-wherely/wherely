@@ -1,5 +1,4 @@
 import ConfigureAmplifyClientSide from '@/app/components/ConfigureAmplify';
-import Header from '@/app/components/Header';
 import '@aws-amplify/ui-react/styles.css';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
@@ -24,7 +23,6 @@ export default function RootLayout({
       <body className={cn(inter.className, 'isolate')} suppressHydrationWarning>
         <ConfigureAmplifyClientSide />
         <div className="flex h-full flex-col">
-          <Header />
           <div className="relative flex-1">{children}</div>
         </div>
       </body>

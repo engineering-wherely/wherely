@@ -26,9 +26,6 @@ export default function Home() {
           projection={projection}
           listeners={{ onCenterChanged }}
         />
-        <div className="pointer-events-none absolute bottom-4 left-1/2 z-10 -translate-x-1/2 rounded-md bg-background/90 px-3 py-1.5 text-sm font-medium text-foreground shadow-sm ring-1 ring-border backdrop-blur">
-          {center.join(',')}
-        </div>
       </div>
     </MappingContextProvider>
   );

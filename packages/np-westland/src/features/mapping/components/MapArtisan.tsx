@@ -1,5 +1,3 @@
-import { GeocodingInput } from '@/features/mapping/components/GeocodingInput';
-import { useGeocoding } from '@/features/mapping/hooks/useGeocoding';
 import { usePrevious } from '@/hooks';
 import { Map, View } from 'ol';
 import { Coordinate } from 'ol/coordinate';
@@ -22,7 +20,6 @@ export default function MapArtisan({ zoom, center, projection, listeners }: MapA
   const targetRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<Map>(null);
   const viewStateRef = useRef({ center, zoom });
-  const { location, result, setLocation } = useGeocoding();
   const previousProjection = usePrevious(projection);
 
   useEffect(() => {
@@ -111,15 +108,6 @@ export default function MapArtisan({ zoom, center, projection, listeners }: MapA
         id='map'
         className='w-full h-full'
       ></div>
-      <div className='absolute left-1/2 top-4 z-10 w-full max-w-sm -translate-x-1/2 px-4'>
-        <GeocodingInput
-          location={location}
-          result={result}
-          onLocationChange={(location) => {
-            setLocation(location);
-          }}
-        />
-      </div>
     </div>
   );
 }
