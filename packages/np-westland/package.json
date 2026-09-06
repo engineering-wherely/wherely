@@ -58,6 +58,7 @@
     "clsx": "^2.1.1",
     "lucide-react": "^0.501.0",
     "ol": "^10.5.0",
+    "ol-ext": "^4.0.38",
     "shadcn": "^4.18.0",
     "tailwind-merge": "^3.2.0",
     "tailwindcss-animate": "^1.0.7",
