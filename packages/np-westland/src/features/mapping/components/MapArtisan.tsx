@@ -1,5 +1,7 @@
 import { usePrevious } from '@/hooks';
 import { Map, View } from 'ol';
+import type Control from 'ol/control/Control';
+import { defaults as defaultControls } from 'ol/control/defaults';
 import { Coordinate } from 'ol/coordinate';
 import { EventsKey } from 'ol/events';
 import { Tile as TileLayer } from 'ol/layer';
@@ -9,14 +11,21 @@ import { equivalent, get as getProjection, ProjectionLike } from 'ol/proj';
 import { OSM } from 'ol/source';
 import { useEffect, useRef } from 'react';
 
-type MapArtisanProps = {
+export type MapArtisanProps = {
   zoom: number;
   center: Coordinate;
   projection: ProjectionLike;
+  customControls?: Control[];
   listeners: { onCenterChanged: (center: Coordinate) => void };
 };
 
-export default function MapArtisan({ zoom, center, projection, listeners }: MapArtisanProps) {
+export default function MapArtisan({
+  zoom,
+  center,
+  projection,
+  customControls,
+  listeners,
+}: MapArtisanProps) {
   const targetRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<Map>(null);
   const viewStateRef = useRef({ center, zoom });
@@ -30,6 +39,7 @@ export default function MapArtisan({ zoom, center, projection, listeners }: MapA
 
     const map = new Map({
       target,
+      controls: defaultControls().extend(customControls ?? []),
       layers: [
         new TileLayer({
           source: new OSM(),
@@ -43,7 +53,7 @@ export default function MapArtisan({ zoom, center, projection, listeners }: MapA
       map.setTarget(undefined);
       mapRef.current = null;
     };
-  }, []);
+  }, [customControls]);
 
   useEffect(() => {
     viewStateRef.current = { center, zoom };

@@ -7,4 +7,5 @@ export type { GetStartedButtonProps } from '@/features/mapping/components/GetSta
 export { GetStartedControl } from '@/features/mapping/ol-controls/GetStartedControl';
 export type { GetStartedControlOptions } from '@/features/mapping/ol-controls/GetStartedControl';
 export { default as MapArtisan } from '@/features/mapping/components/MapArtisan';
+export type { MapArtisanProps } from '@/features/mapping/components/MapArtisan';
 export { MappingContextProvider } from '@/features/mapping/components/MappingContextProvider';
