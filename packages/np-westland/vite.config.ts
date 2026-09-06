@@ -9,6 +9,7 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 import { defineConfig } from 'vitest/config';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const externalPackages = [/^react($|\/)/, /^react-dom($|\/)/];
 const libraryEntries = {
   'client-components': resolve(__dirname, 'src/client-components.ts'),
   hooks: resolve(__dirname, 'src/hooks.ts'),
@@ -35,7 +36,7 @@ export default defineConfig({
       formats: ['es'],
     },
     rollupOptions: {
-      external: ['react', 'react-dom', 'react/jsx-runtime'],
+      external: (id) => externalPackages.some((externalPackage) => externalPackage.test(id)),
       input: {
         ...libraryEntries,
         style: resolve(__dirname, 'src/style.css'),
