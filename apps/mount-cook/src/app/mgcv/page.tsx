@@ -2,8 +2,9 @@
 
 import { MountCookMappingService } from '@/services/mapping/MountCookMappingService';
 import store from '@/store';
-import { MapArtisan, MappingContextProvider } from 'np-westland';
+import { GetStartedControl, MapArtisan, MappingContextProvider } from 'np-westland';
 import type { Coordinate } from 'np-westland/types';
+import { useMemo } from 'react';
 import { useStore } from 'zustand';
 
 export default function Home() {
@@ -17,6 +18,16 @@ export default function Home() {
     setCenter(c);
   }
 
+  const customControls = useMemo(
+    () => [
+      new GetStartedControl({
+        firstName: 'Matthew',
+        lastName: 'Gong',
+      }),
+    ],
+    []
+  );
+
   return (
     <MappingContextProvider service={mappingService} store={store}>
       <div className="relative h-full w-full">
@@ -24,6 +35,7 @@ export default function Home() {
           zoom={zoom}
           center={center}
           projection={projection}
+          customControls={customControls}
           listeners={{ onCenterChanged }}
         />
       </div>

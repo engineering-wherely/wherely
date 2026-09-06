@@ -1,6 +1,10 @@
-import { GetStartedButton, type GetStartedButtonProps } from '@/features/mapping/components/GetStartedButton';
-import Control from 'ol/control/Control';
+import {
+  GetStartedButton,
+  type GetStartedButtonProps,
+} from '@/features/mapping/components/GetStartedButton';
+import type Map from 'ol/Map';
 import type { Options as ControlOptions } from 'ol/control/Control';
+import Control from 'ol/control/Control';
 import { createElement } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
 
@@ -13,33 +17,75 @@ export type GetStartedControlOptions = Pick<
 };
 
 export class GetStartedControl extends Control {
-  private readonly root: Root;
+  private readonly buttonProps: Pick<
+    GetStartedControlOptions,
+    'firstName' | 'lastName' | 'onClick' | 'disabled' | 'className'
+  >;
+  private readonly target?: ControlOptions['target'];
+  private root?: Root;
 
-  constructor({ firstName, lastName, onClick, disabled, className, target }: GetStartedControlOptions) {
-    const element = document.createElement('div');
-    element.className = 'ol-unselectable ol-control np-westland-get-started-control';
+  constructor({
+    firstName,
+    lastName,
+    onClick,
+    disabled,
+    className,
+    target,
+  }: GetStartedControlOptions) {
+    super({});
 
-    const root = createRoot(element);
-    root.render(
+    this.buttonProps = {
+      firstName,
+      lastName,
+      onClick,
+      disabled,
+      className,
+    };
+    this.target = target;
+  }
+
+  override setMap(map: Map | null) {
+    if (map) {
+      this.ensureElement();
+    }
+
+    super.setMap(map);
+
+    if (!map) {
+      this.root?.unmount();
+      this.root = undefined;
+      return;
+    }
+
+    if (!this.element) {
+      return;
+    }
+
+    this.root ??= createRoot(this.element);
+    this.root.render(
       createElement(GetStartedButton, {
-        firstName,
-        lastName,
-        onClick,
-        disabled,
-        className,
+        ...this.buttonProps,
       })
     );
-
-    super({
-      element,
-      target,
-    });
-
-    this.root = root;
   }
 
   protected override disposeInternal() {
-    this.root.unmount();
+    this.root?.unmount();
     super.disposeInternal();
+  }
+
+  private ensureElement() {
+    if (this.element) {
+      return;
+    }
+
+    const element = document.createElement('div');
+    element.className = 'ol-unselectable np-westland-get-started-control';
+    element.style.pointerEvents = 'auto';
+    this.element = element;
+
+    if (this.target) {
+      this.setTarget(this.target);
+    }
   }
 }
