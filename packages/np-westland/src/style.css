@@ -129,9 +129,3 @@
     @apply font-sans;
     }
 }
-
-.np-westland-get-started-control {
-  position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
-}

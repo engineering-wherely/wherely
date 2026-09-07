@@ -10,10 +10,12 @@ import type { EventsKey } from 'ol/events';
 import { unByKey } from 'ol/Observable';
 import Popup, { type PopupOptions } from 'ol-ext/overlay/Popup';
 import 'ol-ext/overlay/Popup.css';
+import '@/features/mapping/ol-controls/GetStartedControl.css';
 import { createElement, type MouseEvent } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
 
 type PopupContent = string | Element;
+const DEFAULT_POPUP_GAP = 12;
 
 export type GetStartedControlOptions = Pick<
   GetStartedButtonProps,
@@ -22,6 +24,7 @@ export type GetStartedControlOptions = Pick<
   className?: string;
   popupContent?: PopupContent | ((map: Map) => PopupContent);
   popupCoordinate?: Coordinate | ((map: Map) => Coordinate | undefined);
+  popupGap?: number;
   popupOptions?: PopupOptions;
   showPopupOnClick?: boolean;
   target?: ControlOptions['target'];
@@ -34,6 +37,7 @@ export class GetStartedControl extends Control {
   >;
   private readonly popupContent?: GetStartedControlOptions['popupContent'];
   private readonly popupCoordinate?: GetStartedControlOptions['popupCoordinate'];
+  private readonly popupGap: number;
   private readonly popupOptions?: PopupOptions;
   private readonly showPopupOnClick: boolean;
   private popup?: Popup;
@@ -49,6 +53,7 @@ export class GetStartedControl extends Control {
     className,
     popupContent,
     popupCoordinate,
+    popupGap = DEFAULT_POPUP_GAP,
     popupOptions,
     showPopupOnClick = true,
     target,
@@ -64,6 +69,7 @@ export class GetStartedControl extends Control {
     };
     this.popupContent = popupContent;
     this.popupCoordinate = popupCoordinate;
+    this.popupGap = popupGap;
     this.popupOptions = popupOptions;
     this.showPopupOnClick = showPopupOnClick;
     this.target = target;
@@ -163,6 +169,7 @@ export class GetStartedControl extends Control {
 
     const popup = new Popup({
       closeBox: true,
+      popupClass: 'np-westland-get-started-popup',
       positioning: 'center-right',
       stopEvent: true,
       ...this.popupOptions,
@@ -196,7 +203,7 @@ export class GetStartedControl extends Control {
     const controlRect = this.element.getBoundingClientRect();
     const viewportRect = map.getViewport().getBoundingClientRect();
     const controlLeftCenterPixel: [number, number] = [
-      controlRect.left - viewportRect.left,
+      controlRect.left - viewportRect.left - this.popupGap,
       controlRect.top - viewportRect.top + controlRect.height / 2,
     ];
 

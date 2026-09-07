@@ -1,0 +1,67 @@
+@reference "../../../style.css";
+
+.np-westland-get-started-control {
+  @apply absolute right-2 top-2;
+}
+
+.ol-popup.np-westland-get-started-popup {
+  @apply relative text-sm leading-normal text-popover-foreground;
+
+  filter: drop-shadow(0 16px 32px rgb(15 23 42 / 14%));
+}
+
+.ol-popup.np-westland-get-started-popup > div {
+  @apply border-0 bg-transparent;
+}
+
+.ol-popup.np-westland-get-started-popup .ol-popup-content {
+  @apply relative flex min-h-12 min-w-56 items-center overflow-visible rounded-xl border-0 bg-popover px-4 py-2.5 pr-10 shadow-md;
+
+  max-width: min(20rem, calc(100vw - 2rem));
+  backdrop-filter: blur(12px);
+}
+
+.ol-popup.np-westland-get-started-popup.hasclosebox .ol-popup-content {
+  margin-right: 0;
+}
+
+.ol-popup.np-westland-get-started-popup [class~='closeBox'] {
+  @apply absolute z-10 m-0 flex size-7 items-center justify-center rounded-full bg-transparent text-muted-foreground;
+
+  top: 50%;
+  right: 0.625rem;
+  float: none;
+  transform: translateY(-50%);
+}
+
+.ol-popup.np-westland-get-started-popup.hasclosebox [class~='closeBox'] {
+  display: flex;
+}
+
+.ol-popup.np-westland-get-started-popup [class~='closeBox']:hover {
+  @apply bg-muted text-foreground;
+}
+
+.ol-popup.np-westland-get-started-popup [class~='closeBox']::after {
+  @apply static text-xl leading-none;
+
+  width: auto;
+  margin: 0;
+}
+
+.ol-popup.np-westland-get-started-popup .anchor {
+  display: none;
+}
+
+.ol-popup-middle.ol-popup-right.np-westland-get-started-popup .ol-popup-content::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: -0.625rem;
+  width: 0;
+  height: 0;
+  border-top: 0.625rem solid transparent;
+  border-bottom: 0.625rem solid transparent;
+  border-left: 0.75rem solid var(--popover);
+  transform: translateY(-50%);
+}
