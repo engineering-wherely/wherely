@@ -1,0 +1,93 @@
+@reference "../../../style.css";
+
+.ol-popup.np-westland-popup-overlay {
+  @apply relative text-sm leading-normal text-popover-foreground;
+
+  filter: drop-shadow(0 16px 32px rgb(15 23 42 / 14%));
+}
+
+.ol-popup.np-westland-popup-overlay > div {
+  @apply border-0 bg-transparent;
+}
+
+.ol-popup.np-westland-popup-overlay .ol-popup-content {
+  @apply overflow-visible p-0;
+}
+
+.ol-popup.np-westland-popup-overlay .anchor,
+.ol-popup.np-westland-popup-overlay .closeBox {
+  display: none;
+}
+
+.np-westland-popup {
+  @apply relative flex min-h-12 min-w-56 items-center gap-3 rounded-xl border-0 bg-popover py-2.5 pl-4 pr-2.5 text-sm leading-normal text-popover-foreground shadow-md;
+
+  max-width: min(20rem, calc(100vw - 2rem));
+  backdrop-filter: blur(12px);
+}
+
+.np-westland-popup__body {
+  @apply min-w-0 flex-1;
+}
+
+.np-westland-popup__close {
+  @apply flex size-7 shrink-0 items-center justify-center rounded-full bg-transparent text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50;
+}
+
+.np-westland-popup__close svg {
+  @apply size-5;
+}
+
+.ol-popup-right.np-westland-popup-overlay .np-westland-popup::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: -0.625rem;
+  width: 0;
+  height: 0;
+  border-top: 0.625rem solid transparent;
+  border-bottom: 0.625rem solid transparent;
+  border-left: 0.75rem solid var(--popover);
+  transform: translateY(-50%);
+}
+
+.ol-popup-left.np-westland-popup-overlay .np-westland-popup::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -0.625rem;
+  width: 0;
+  height: 0;
+  border-top: 0.625rem solid transparent;
+  border-right: 0.75rem solid var(--popover);
+  border-bottom: 0.625rem solid transparent;
+  transform: translateY(-50%);
+}
+
+.ol-popup-top:not(.ol-popup-left):not(.ol-popup-right).np-westland-popup-overlay
+  .np-westland-popup::before {
+  content: '';
+  position: absolute;
+  top: -0.625rem;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-right: 0.625rem solid transparent;
+  border-bottom: 0.75rem solid var(--popover);
+  border-left: 0.625rem solid transparent;
+  transform: translateX(-50%);
+}
+
+.ol-popup-bottom:not(.ol-popup-left):not(.ol-popup-right).np-westland-popup-overlay
+  .np-westland-popup::before {
+  content: '';
+  position: absolute;
+  bottom: -0.625rem;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-top: 0.75rem solid var(--popover);
+  border-right: 0.625rem solid transparent;
+  border-left: 0.625rem solid transparent;
+  transform: translateX(-50%);
+}
