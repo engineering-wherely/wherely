@@ -28,6 +28,7 @@ export default defineConfig({
   out: "./drizzle",
   schema: "./src/db/schema",
   dialect: "postgresql",
+  extensionsFilters: ["postgis"],
   // Kit ignores a separate SSL object when credentials use the `url` form.
   dbCredentials: rdsEndpoint && rdsCaPath
       ? {

@@ -13,7 +13,7 @@ export const formsTable = snakeCase.table("forms", {
   name: makeName(),
 });
 
-const fieldTypeEnum = pgEnum("type", [
+export const fieldTypeEnum = pgEnum("field_type", [
   "text",
   "number",
   "boolean",
