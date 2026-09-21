@@ -2,6 +2,7 @@ export type { default as MappingService } from '@/features/mapping/services/Mapp
 export type {
   Coordinate,
   GeographicCoordinate,
+  GeoLayer,
   Latitude,
   Longitude,
 } from '@/features/mapping/types';

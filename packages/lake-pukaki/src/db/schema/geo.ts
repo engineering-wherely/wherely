@@ -6,7 +6,7 @@ import { compositeFormsTable, formsTable } from "./forms";
 
 export const geoLayersTable = snakeCase.table("geo_layers", {
   id: makeId(),
-  name: varchar({ length: 256 }),
+  name: varchar({ length: 256 }).notNull(),
 });
 
 export const geoFeaturesTable = snakeCase.table(
