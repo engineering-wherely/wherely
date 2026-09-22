@@ -4,5 +4,6 @@ dist
 build
 .DS_Store
 *.drawio.bkp
+*.drawio.dtmp
 .env
 .pnpm-store

@@ -32,27 +32,13 @@ export const schema = configure({
         }
     }
 }).schema({
-    "composite_form_members": a.model({
-        id: a.integer().required(),
-        composite_form_id: a.integer().required(),
-        form_id: a.integer().required(),
-        form_input_min: a.integer(),
-        form_input_max: a.integer(),
-        form_input_count: a.integer()
-    }).identifier([
-        "id"
-    ]),
-    "composite_forms": a.model({
-        id: a.integer().required(),
-        name: a.string().required()
-    }).identifier([
-        "id"
-    ]),
     "field_inputs": a.model({
         id: a.integer().required(),
         value: a.string(),
         form_input_id: a.integer().required(),
-        field_id: a.integer().required()
+        field_id: a.integer().required(),
+        form_id: a.integer().required(),
+        form_type: a.ref("Field_inputsForm_type").required()
     }).identifier([
         "id"
     ]),
@@ -61,13 +47,48 @@ export const schema = configure({
         name: a.string().required(),
         type: a.ref("FieldsType"),
         required: a.boolean().required(),
+        simple_form_id: a.integer().required(),
+        form_type: a.ref("FieldsForm_type").required()
+    }).identifier([
+        "id"
+    ]),
+    "form_bindings": a.model({
+        id: a.integer().required(),
+        form_subject_type: a.ref("Form_bindingsForm_subject_type").required(),
+        form_subject_id: a.integer(),
+        form_type: a.ref("Form_bindingsForm_type").required(),
         form_id: a.integer().required()
+    }).identifier([
+        "id"
+    ]),
+    "form_compositions": a.model({
+        id: a.integer().required(),
+        composite_form_id: a.integer().required(),
+        composite_form_type: a.ref("Form_compositionsComposite_form_type").required(),
+        member_type: a.ref("Form_compositionsMember_type").required(),
+        member_id: a.integer().required(),
+        member_min: a.integer(),
+        member_max: a.integer(),
+        member_count: a.integer()
+    }).identifier([
+        "id"
+    ]),
+    "form_input_bindings": a.model({
+        id: a.integer().required(),
+        form_binding_id: a.integer().required(),
+        form_subject_id: a.integer(),
+        form_input_id: a.integer().required(),
+        form_id: a.integer().required(),
+        form_type: a.ref("Form_input_bindingsForm_type").required()
     }).identifier([
         "id"
     ]),
     "form_inputs": a.model({
         id: a.integer().required(),
-        composite_form_id: a.integer().required(),
+        parent_id: a.integer(),
+        parent_form_id: a.integer(),
+        parent_form_type: a.ref("Form_inputsParent_form_type").required(),
+        form_type: a.ref("Form_inputsForm_type").required(),
         form_id: a.integer().required(),
         form_index: a.integer().required()
     }).identifier([
@@ -75,16 +96,15 @@ export const schema = configure({
     ]),
     "forms": a.model({
         id: a.integer().required(),
-        name: a.string().required()
+        name: a.string().required(),
+        type: a.ref("FormsType").required()
     }).identifier([
         "id"
     ]),
     "geo_features": a.model({
         id: a.integer().required(),
-        layer_id: a.integer().required(),
-        geometry: a.string(),
-        form_id: a.integer().required(),
-        composite_form_id: a.integer().required()
+        geo_layer_id: a.integer().required(),
+        geometry: a.string()
     }).identifier([
         "id"
     ]),
@@ -110,5 +130,45 @@ export const schema = configure({
         "boolean",
         "number",
         "text"
+    ]),
+    Field_inputsForm_type: a.enum([
+        "composite_form",
+        "simple_form"
+    ]),
+    FieldsForm_type: a.enum([
+        "composite_form",
+        "simple_form"
+    ]),
+    Form_bindingsForm_subject_type: a.enum([
+        "geo_feature",
+        "geo_layer"
+    ]),
+    Form_bindingsForm_type: a.enum([
+        "composite_form",
+        "simple_form"
+    ]),
+    Form_compositionsComposite_form_type: a.enum([
+        "composite_form",
+        "simple_form"
+    ]),
+    Form_compositionsMember_type: a.enum([
+        "composite_form",
+        "simple_form"
+    ]),
+    Form_input_bindingsForm_type: a.enum([
+        "composite_form",
+        "simple_form"
+    ]),
+    Form_inputsParent_form_type: a.enum([
+        "composite_form",
+        "simple_form"
+    ]),
+    Form_inputsForm_type: a.enum([
+        "composite_form",
+        "simple_form"
+    ]),
+    FormsType: a.enum([
+        "composite_form",
+        "simple_form"
     ])
 });

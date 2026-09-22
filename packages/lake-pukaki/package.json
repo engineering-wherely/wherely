@@ -4,7 +4,8 @@
   "description": "AWS Amplify Gen 2 based backend app",
   "main": "index.js",
   "scripts": {
-    "sandbox": "ampx sandbox --profile $AWS_PROFILE"
+    "sandbox": "ampx sandbox --profile $AWS_PROFILE",
+    "test:schema": "tsx --tsconfig tsconfig.json tests/schema-integrity.ts"
   },
   "keywords": [],
   "author": "",

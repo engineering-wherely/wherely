@@ -9,9 +9,7 @@ export const makeId = () =>
   bigint({ mode: "number" }).primaryKey().generatedAlwaysAsIdentity();
 
 export const makeForeignId = (id: PgBigInt53) =>
-  bigint({ mode: "number" })
-    .references(() => id)
-    .notNull();
+  bigint({ mode: "number" }).references(() => id);
 
 export const makeName = () => varchar({ length: 256 }).notNull();
 
