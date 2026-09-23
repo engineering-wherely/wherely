@@ -13,4 +13,6 @@ export { Popup } from '@/features/mapping/components/Popup';
 export type { PopupProps } from '@/features/mapping/components/Popup';
 export { View } from '@/features/mapping/components/View';
 export type { ViewProps } from '@/features/mapping/components/View';
+export { YearMonthRangeListControl } from '@/features/mapping/components/YearMonthRangeListControl';
+export type { YearMonthRangeListControlProps } from '@/features/mapping/components/YearMonthRangeListControl';
 export { useOlMap } from '@/features/mapping/hooks/useOlMap';
