@@ -84,15 +84,18 @@ export function YearMonthRangeListControl({
                 variant='ghost'
                 className='h-auto w-full flex-col gap-1 px-2 py-1 text-xs'
               >
-                <span className='whitespace-nowrap font-medium tabular-nums'>
+                <span className='hidden whitespace-nowrap font-medium tabular-nums sm:inline'>
+                  {formatYearMonth(range.start, 'full')} - {formatYearMonth(range.end, 'full')}
+                </span>
+                <span className='whitespace-nowrap font-medium tabular-nums sm:hidden'>
                   <span className='sr-only'>Start: </span>
                   {formatYearMonth(range.start)}
                 </span>
                 <span
                   aria-hidden='true'
-                  className='h-1.5 w-px bg-slate-300'
+                  className='h-1.5 w-px bg-slate-300 sm:hidden'
                 />
-                <span className='whitespace-nowrap font-medium tabular-nums'>
+                <span className='whitespace-nowrap font-medium tabular-nums sm:hidden'>
                   <span className='sr-only'>End: </span>
                   {formatYearMonth(range.end)}
                 </span>

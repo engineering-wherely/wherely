@@ -16,16 +16,22 @@ export const MONTHS = [
   'Dec',
 ];
 
-export function formatYearMonth(value: Maybe<string>) {
+export function formatYearMonth(value: Maybe<string>, yearFormat: 'short' | 'full' = 'short') {
   if (!value) {
     return '—';
   }
   const match = /^(\d{4})(0[1-9]|1[0-2])$/.exec(value);
-  return match ? `${MONTHS[Number(match[2]) - 1]} ’${match[1].slice(-2)}` : value;
+  if (!match) {
+    return value;
+  }
+  const year = yearFormat === 'full' ? match[1] : `’${match[1].slice(-2)}`;
+  return `${MONTHS[Number(match[2]) - 1]} ${year}`;
 }
 
 export function toYearMonth(value: Maybe<string>): string {
-  if (!value) return '';
+  if (!value) {
+    return '';
+  }
   const match = /^(\d{4})-?(0[1-9]|1[0-2])(?:$|-\d{2}(?:T.*)?$)/.exec(value);
   return match ? `${match[1]}${match[2]}` : value;
 }
