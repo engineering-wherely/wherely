@@ -1,11 +1,12 @@
 import type { YearMonthRange } from '@/features/forms/year-month-range/types';
 import { formatYearMonth, sortYearMonthRanges } from '@/features/forms/year-month-range/utils';
 import '@/features/mapping/components/YearMonthRangeListControl.css';
+import { ControlsContext } from '@/features/mapping/contexts/ControlsContext';
 import { useOlMap } from '@/features/mapping/hooks/useOlMap';
 import { Button } from '@/shadcn-ui/components/ui/button';
 import type { Nullable } from '@/types/common';
 import Control, { type Options as ControlOptions } from 'ol/control/Control';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 export type YearMonthRangeListControlProps = {
@@ -24,6 +25,8 @@ export function YearMonthRangeListControl({
   target,
 }: YearMonthRangeListControlProps) {
   const map = useOlMap();
+  const controlsTarget = useContext(ControlsContext);
+  const controlTarget = target ?? controlsTarget ?? undefined;
   const [element, setElement] = useState<Nullable<HTMLDivElement>>(null);
   const yearMonthRanges = sortYearMonthRanges(ranges);
 
@@ -36,7 +39,7 @@ export function YearMonthRangeListControl({
     element.className = 'ol-unselectable np-westland-year-month-range-list-control';
     element.style.pointerEvents = 'auto';
 
-    const control = new Control({ element, target });
+    const control = new Control({ element, target: controlTarget });
     map.addControl(control);
     setElement(element);
 
@@ -44,7 +47,7 @@ export function YearMonthRangeListControl({
       map.removeControl(control);
       setElement(null);
     };
-  }, [map, target]);
+  }, [map, controlTarget]);
 
   if (!element) {
     return null;

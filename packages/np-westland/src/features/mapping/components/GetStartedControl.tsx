@@ -1,10 +1,11 @@
 import '@/features/mapping/components/GetStartedControl.css';
+import { ControlsContext } from '@/features/mapping/contexts/ControlsContext';
 import { useOlMap } from '@/features/mapping/hooks/useOlMap';
 import { cn } from '@/shadcn-ui/lib/utils';
 import type { Nullable } from '@/types/common';
 import type { Options as ControlOptions } from 'ol/control/Control';
 import Control from 'ol/control/Control';
-import { type ButtonHTMLAttributes, useEffect, useState } from 'react';
+import { type ButtonHTMLAttributes, useContext, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 export type GetStartedControlProps = ButtonHTMLAttributes<HTMLButtonElement> & {
@@ -26,6 +27,8 @@ export function GetStartedControl({
   ...props
 }: GetStartedControlProps) {
   const map = useOlMap();
+  const controlsTarget = useContext(ControlsContext);
+  const controlTarget = target ?? controlsTarget ?? undefined;
   const [element, setElement] = useState<Nullable<HTMLDivElement>>(null);
   const initials = `${getInitial(firstName)}${getInitial(lastName)}`;
   const fullName = `${firstName} ${lastName}`.trim();
@@ -39,7 +42,7 @@ export function GetStartedControl({
     element.className = 'ol-unselectable np-westland-get-started-control';
     element.style.pointerEvents = 'auto';
 
-    const control = new Control({ element, target });
+    const control = new Control({ element, target: controlTarget });
     map.addControl(control);
     setElement(element);
 
@@ -47,7 +50,7 @@ export function GetStartedControl({
       map.removeControl(control);
       setElement(null);
     };
-  }, [map, target]);
+  }, [map, controlTarget]);
 
   if (!element) {
     return null;

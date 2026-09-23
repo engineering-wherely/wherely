@@ -2,6 +2,8 @@
 export { Button, buttonVariants } from '@/shadcn-ui/components/ui/button';
 
 // homemade components
+export { Controls } from '@/features/mapping/components/Controls';
+export type { ControlsProps } from '@/features/mapping/components/Controls';
 export { GetStartedControl } from '@/features/mapping/components/GetStartedControl';
 export type { GetStartedControlProps } from '@/features/mapping/components/GetStartedControl';
 export { Map } from '@/features/mapping/components/Map';

@@ -5,6 +5,7 @@ import { useGeoLayers } from '@/app/mgcv/hooks/useGeoLayers';
 import { MountCookMappingService } from '@/services/mapping/MountCookMappingService';
 import store from '@/store';
 import {
+  Controls,
   GetStartedControl,
   MapArtisan,
   MappingContextProvider,
@@ -56,13 +57,16 @@ export default function Home() {
           projection={projection}
           listeners={{ onCenterChanged }}
         >
-          <GetStartedControl
-            firstName="Matthew"
-            lastName="Gong"
-            onClick={() => {
-              setIsGetStartedPopupOpen(true);
-            }}
-          />
+          <Controls position="top-right">
+            <GetStartedControl
+              firstName="Matthew"
+              lastName="Gong"
+              onClick={() => {
+                setIsGetStartedPopupOpen(true);
+              }}
+            />
+            <YearMonthRangeListControl />
+          </Controls>
           {isGetStartedPopupOpen ? (
             <Popup
               coordinate={getGetStartedPopupCoordinate}
@@ -73,7 +77,6 @@ export default function Home() {
               Get started as Matthew Gong
             </Popup>
           ) : null}
-          <YearMonthRangeListControl />
         </MapArtisan>
         <div
           className="pointer-events-none absolute bottom-4 left-4 z-10 rounded-lg bg-white px-4 py-3 text-sm font-medium text-slate-900 shadow-md"

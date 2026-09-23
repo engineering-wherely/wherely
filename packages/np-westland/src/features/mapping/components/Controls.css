@@ -1,0 +1,40 @@
+.np-westland-controls {
+  position: absolute;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: calc(100% - 16px);
+  max-height: calc(100% - 16px);
+  pointer-events: none;
+}
+
+.np-westland-controls[data-position^='top'] {
+  top: 8px;
+}
+
+.np-westland-controls[data-position^='bottom'] {
+  bottom: 8px;
+}
+
+.np-westland-controls[data-position$='right'] {
+  right: 8px;
+  align-items: flex-end;
+}
+
+.np-westland-controls[data-position$='left'] {
+  left: 8px;
+  align-items: flex-start;
+}
+
+.np-westland-controls > .np-westland-get-started-control,
+.np-westland-controls > .np-westland-year-month-range-list-control {
+  position: static;
+  min-height: 0;
+  max-width: 100%;
+  max-height: none;
+}
+
+.np-westland-controls > .np-westland-get-started-control {
+  flex-shrink: 0;
+}
