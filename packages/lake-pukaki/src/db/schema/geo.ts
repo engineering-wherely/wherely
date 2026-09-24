@@ -1,6 +1,6 @@
 import { makeForeignId, makeId } from "@/db/column-helpers";
 import { mixedGeometry } from "@/db/custom-types";
-import { snakeCase, varchar } from "drizzle-orm/pg-core";
+import { snakeCase, varchar, jsonb } from "drizzle-orm/pg-core";
 
 export const geoLayersTable = snakeCase.table("geo_layers", {
   id: makeId(),
@@ -10,5 +10,7 @@ export const geoLayersTable = snakeCase.table("geo_layers", {
 export const geoFeaturesTable = snakeCase.table("geo_features", {
   id: makeId(),
   geoLayerId: makeForeignId(geoLayersTable.id).notNull(),
-  geometry: mixedGeometry(),
+  geometry: mixedGeometry().notNull(),
+  originalInput: jsonb().notNull(),
+  originalCrs: varchar({ length: 256 }).notNull(),
 });

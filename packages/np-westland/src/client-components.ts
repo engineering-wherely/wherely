@@ -2,6 +2,12 @@
 export { Button, buttonVariants } from '@/shadcn-ui/components/ui/button';
 
 // homemade components
+export { Layers } from '@/features/mapping/components/Layers';
+export type { LayersProps } from '@/features/mapping/components/Layers';
+export { VectorLayer } from '@/features/mapping/components/VectorLayer';
+export type { VectorLayerProps } from '@/features/mapping/components/VectorLayer';
+export { Feature } from '@/features/mapping/components/Feature';
+export type { FeatureProps } from '@/features/mapping/components/Feature';
 export { Controls } from '@/features/mapping/components/Controls';
 export type { ControlsProps } from '@/features/mapping/components/Controls';
 export { GetStartedControl } from '@/features/mapping/components/GetStartedControl';

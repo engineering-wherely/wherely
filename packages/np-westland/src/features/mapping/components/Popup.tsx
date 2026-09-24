@@ -80,28 +80,38 @@ export function Popup({
       return;
     }
 
-    if (!isOpen) {
-      popupRef.current.hide();
-      return;
-    }
+    const popup = popupRef.current;
+    const updatePosition = () => {
+      if (!isOpen) {
+        popup.hide();
+        return;
+      }
 
-    const nextCoordinate = getCoordinate(map, coordinate);
-    if (!nextCoordinate) {
-      popupRef.current.hide();
-      return;
-    }
+      const nextCoordinate = getCoordinate(map, coordinate);
+      if (!nextCoordinate) {
+        popup.hide();
+        return;
+      }
 
-    popupRef.current.show(nextCoordinate, container);
-  }, [container, coordinate, isOpen, map]);
+      const position = popup.getPosition();
+      if (
+        !container.parentElement ||
+        !position ||
+        position.length !== nextCoordinate.length ||
+        position.some((value, index) => value !== nextCoordinate[index])
+      ) {
+        popup.show(nextCoordinate, container);
+      }
+    };
 
-  useEffect(() => {
-    if (!map || !updateOnPostRender) {
+    updatePosition();
+    if (!updateOnPostRender) {
       return;
     }
 
     const keys: EventsKey[] = [
-      map.on('change:size', () => updatePopupPosition(map, coordinate, popupRef.current)),
-      map.on('postrender', () => updatePopupPosition(map, coordinate, popupRef.current)),
+      map.on('change:size', updatePosition),
+      map.on('postrender', updatePosition),
     ];
 
     return () => {
@@ -109,7 +119,7 @@ export function Popup({
         unByKey(key);
       }
     };
-  }, [coordinate, map, updateOnPostRender]);
+  }, [container, coordinate, isOpen, map, updateOnPostRender]);
 
   function handleClose() {
     setUncontrolledOpen(false);
@@ -147,21 +157,6 @@ function getCoordinate(map: Map, coordinate: Optional<PopupCoordinate>) {
   }
 
   return coordinate ?? map.getView().getCenter();
-}
-
-function updatePopupPosition(
-  map: Map,
-  coordinate: Optional<PopupCoordinate>,
-  popup: Nullable<OlExtPopup>
-) {
-  if (!popup?.getVisible()) {
-    return;
-  }
-
-  const nextCoordinate = getCoordinate(map, coordinate);
-  if (nextCoordinate) {
-    popup.show(nextCoordinate);
-  }
 }
 
 export default Popup;

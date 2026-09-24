@@ -104,7 +104,9 @@ export const schema = configure({
     "geo_features": a.model({
         id: a.integer().required(),
         geo_layer_id: a.integer().required(),
-        geometry: a.string()
+        geometry: a.string().required(),
+        original_input: a.json().required(),
+        original_crs: a.string().required()
     }).identifier([
         "id"
     ]),

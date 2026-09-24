@@ -2,8 +2,11 @@
   "name": "lake-pukaki",
   "version": "0.1.0",
   "description": "AWS Amplify Gen 2 based backend app",
-  "main": "index.js",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "scripts": {
+    "build": "tsc -p tsconfig.build.json && vite build",
     "aws:sandbox:start": "ampx sandbox --profile $AWS_PROFILE",
     "aws:sandbox:stop": "ampx sandbox delete --profile $AWS_PROFILE",
     "test:schema": "tsx --tsconfig tsconfig.json tests/schema-integrity.ts"
@@ -15,7 +18,8 @@
     "aws-amplify": "^6.14.2",
     "dotenv": "^17.4.2",
     "drizzle-orm": "1.0.0-rc.4",
-    "pg": "^8.23.0"
+    "pg": "^8.23.0",
+    "zod": "^4.6.5"
   },
   "devDependencies": {
     "@aws-amplify/backend": "^1.15.0",
@@ -27,7 +31,10 @@
     "constructs": "^10.4.2",
     "drizzle-kit": "1.0.0-rc.4",
     "tsx": "^4.23.13",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "vite": "^6.3.2",
+    "vite-plugin-dts": "^4.5.3",
+    "vite-tsconfig-paths": "^6.1.1"
   },
   "type": "module"
 }

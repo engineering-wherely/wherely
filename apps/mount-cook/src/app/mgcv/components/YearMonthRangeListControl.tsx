@@ -1,5 +1,5 @@
 import { useFormInputNodes } from '@/app/mgcv/hooks/useFormInputNodes';
-import { YearMonthRangeListControl as RangeListControl } from 'np-westland';
+import { YearMonthRangeListControl as NPWYearMonthRangeListControl } from 'np-westland';
 import type { YearMonthRange } from 'np-westland/types';
 import { toYearMonth } from 'np-westland/utils';
 
@@ -15,7 +15,7 @@ export default function YearMonthRangeListControl() {
   }));
 
   return (
-    <RangeListControl
+    <NPWYearMonthRangeListControl
       ranges={ranges}
       isPending={isPending}
       isFetching={isFetching}

@@ -1,12 +1,13 @@
 'use client';
 
+import VectorLayer from '@/app/mgcv/components/VectorLayer';
 import YearMonthRangeListControl from '@/app/mgcv/components/YearMonthRangeListControl';
-import { useGeoLayers } from '@/app/mgcv/hooks/useGeoLayers';
 import { MountCookMappingService } from '@/services/mapping/MountCookMappingService';
 import store from '@/store';
 import {
   Controls,
   GetStartedControl,
+  Layers,
   MapArtisan,
   MappingContextProvider,
   Popup,
@@ -27,7 +28,6 @@ export default function Home() {
   const projection = useStore(store, (s) => s.projection);
   const setCenter = useStore(store, (s) => s.setCenter);
   const [isGetStartedPopupOpen, setIsGetStartedPopupOpen] = useState(true);
-  const { status: geoLayersStatus, data: geoLayers } = useGeoLayers();
 
   function onCenterChanged(c: Coordinate) {
     setCenter(c);
@@ -67,6 +67,7 @@ export default function Home() {
             />
             <YearMonthRangeListControl />
           </Controls>
+
           {isGetStartedPopupOpen ? (
             <Popup
               coordinate={getGetStartedPopupCoordinate}
@@ -77,18 +78,11 @@ export default function Home() {
               Get started as Matthew Gong
             </Popup>
           ) : null}
+
+          <Layers>
+            <VectorLayer geoLayerId={1} />
+          </Layers>
         </MapArtisan>
-        <div
-          className="pointer-events-none absolute bottom-4 left-4 z-10 rounded-lg bg-white px-4 py-3 text-sm font-medium text-slate-900 shadow-md"
-          role="status"
-          aria-live="polite"
-        >
-          {geoLayersStatus === 'pending'
-            ? 'Loading geo layers…'
-            : geoLayersStatus === 'error'
-              ? 'Unable to load geo layers'
-              : `Geo layers: ${geoLayers.length}`}
-        </div>
       </div>
     </MappingContextProvider>
   );

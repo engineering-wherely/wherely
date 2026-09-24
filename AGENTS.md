@@ -1,5 +1,9 @@
 # Coding conventions
 
+- Don't use deprecated APIs.
+- When wrapping a component defined in np-westland in mount-cook, add the NPW
+  in front of the name of the wrapped component. Refer to YearMonthRangeListControl.tsx
+  defined in mount-cook as an example.
 - Use configured path aliases instead of relative paths for imports.
 - Automatically run VS Code's `Organize Imports` command after changing imports
   in a file.

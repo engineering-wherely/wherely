@@ -2,16 +2,16 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { generateClient } from 'aws-amplify/data';
-import type { Schema } from 'lake-pukaki/amplify/data/resource';
+import type { AmplifyDataSchema } from 'lake-pukaki';
 
-type FormInput = Schema['form_inputs']['type'];
+type FormInput = AmplifyDataSchema['form_inputs']['type'];
 
 export type FormInputNode = Pick<
   FormInput,
   'id' | 'form_id' | 'form_type' | 'form_index' | 'parent_id' | 'parent_form_id'
 > & {
   fieldInputs: Pick<
-    Schema['field_inputs']['type'],
+    AmplifyDataSchema['field_inputs']['type'],
     'id' | 'field_id' | 'form_input_id' | 'form_id' | 'form_type' | 'value'
   >[];
   children: FormInputNode[];
@@ -96,7 +96,7 @@ export function useFormInputNodes(formId: number | null | undefined) {
       if (formId == null) {
         throw new Error('A form ID is required');
       }
-      const client = generateClient<Schema>({ authMode: 'apiKey' });
+      const client = generateClient<AmplifyDataSchema>({ authMode: 'apiKey' });
       const { data: form, errors } = await client.models.forms.get({
         id: formId,
       });
