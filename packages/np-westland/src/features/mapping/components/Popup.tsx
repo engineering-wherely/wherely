@@ -42,9 +42,9 @@ export function Popup({
   ...props
 }: PopupProps) {
   const map = useOlMap();
-  const containerRef = useRef<Nullable<HTMLDivElement>>(null);
+  const contentRef = useRef<Nullable<HTMLDivElement>>(null);
   const popupRef = useRef<Nullable<OlExtPopup>>(null);
-  const [container, setContainer] = useState<Nullable<HTMLDivElement>>(null);
+  const [content, setContent] = useState<Nullable<HTMLDivElement>>(null);
   const [uncontrolledOpen, setUncontrolledOpen] = useState(defaultOpen);
   const isOpen = open ?? uncontrolledOpen;
 
@@ -53,7 +53,7 @@ export function Popup({
       return;
     }
 
-    const container = document.createElement('div');
+    const content = document.createElement('div');
     const popup = new OlExtPopup({
       closeBox: false,
       popupClass: cn('np-westland-popup-overlay', popupClassName),
@@ -62,21 +62,21 @@ export function Popup({
       ...popupOptions,
     });
     map.addOverlay(popup);
-    containerRef.current = container;
+    contentRef.current = content;
     popupRef.current = popup;
-    setContainer(container);
+    setContent(content);
 
     return () => {
       popup.hide();
       map.removeOverlay(popup);
-      containerRef.current = null;
+      contentRef.current = null;
       popupRef.current = null;
-      setContainer(null);
+      setContent(null);
     };
   }, [map, popupClassName, popupOptions]);
 
   useEffect(() => {
-    if (!map || !popupRef.current || !container) {
+    if (!map || !popupRef.current || !content) {
       return;
     }
 
@@ -95,16 +95,17 @@ export function Popup({
 
       const position = popup.getPosition();
       if (
-        !container.parentElement ||
+        !content.parentElement ||
         !position ||
         position.length !== nextCoordinate.length ||
         position.some((value, index) => value !== nextCoordinate[index])
       ) {
-        popup.show(nextCoordinate, container);
+        popup.show(nextCoordinate, content);
       }
     };
 
     updatePosition();
+
     if (!updateOnPostRender) {
       return;
     }
@@ -119,14 +120,14 @@ export function Popup({
         unByKey(key);
       }
     };
-  }, [container, coordinate, isOpen, map, updateOnPostRender]);
+  }, [content, coordinate, isOpen, map, updateOnPostRender]);
 
   function handleClose() {
     setUncontrolledOpen(false);
     onOpenChange?.(false);
   }
 
-  if (!container) {
+  if (!content) {
     return null;
   }
 
@@ -147,7 +148,7 @@ export function Popup({
         </button>
       ) : null}
     </div>,
-    container
+    content
   );
 }
 
