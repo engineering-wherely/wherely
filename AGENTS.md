@@ -2,7 +2,7 @@
 
 - Don't use deprecated APIs.
 - When wrapping a component defined in np-westland in mount-cook, add the NPW
-  in front of the name of the wrapped component. Refer to YearMonthRangeListControl.tsx
+  as a prefix to the name of the wrapped component. Refer to YearMonthRangeListControl.tsx
   defined in mount-cook as an example.
 - Use configured path aliases instead of relative paths for imports.
 - Automatically run VS Code's `Organize Imports` command after changing imports
@@ -19,3 +19,5 @@
   intended distinction between `null`, `undefined`, and both. Keep optional
   property and parameter syntax (`?`) when omission is intended.
 - Apply these conventions to new and modified code. Do not edit generated files.
+- Add `ASD` as a prefix to the names of types derived from the AmplifyDataSchema type.
+  Refer to ADSFormInput in useFormInputNodes hook in mount-cook as an example.

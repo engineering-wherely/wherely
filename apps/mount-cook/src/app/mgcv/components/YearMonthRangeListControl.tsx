@@ -7,10 +7,10 @@ export default function YearMonthRangeListControl() {
   const { isPending, error, data, isFetching } = useFormInputNodes(1);
   const ranges: YearMonthRange[] = (data ?? []).map((node) => ({
     start: toYearMonth(
-      node.fieldInputs.find((input) => input.field_id === 1)?.value
+      node.fieldInputs.find((input) => input.fieldId === 1)?.value
     ),
     end: toYearMonth(
-      node.fieldInputs.find((input) => input.field_id === 2)?.value
+      node.fieldInputs.find((input) => input.fieldId === 2)?.value
     ),
   }));
 
