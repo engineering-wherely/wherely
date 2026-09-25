@@ -58,17 +58,20 @@ try {
   started = true;
   for (let attempt = 0; ; attempt++) {
     try {
-      docker(["exec", container, "pg_isready", "-U", "postgres"]);
+      docker(["exec", container, "pg_isready", "-h", "127.0.0.1", "-U", "postgres"]);
       break;
     } catch (error) {
-      if (attempt === 60) throw error;
+      if (attempt === 60) {
+        throw error;
+      }
       await new Promise((resolve) => setTimeout(resolve, 500));
     }
   }
   const empty = await generateDrizzleJson({});
   const schema = await generateDrizzleJson({ ...forms, ...bindings }, empty.id);
-  for (const statement of await generateMigration(empty, schema))
+  for (const statement of await generateMigration(empty, schema)) {
     await client.query(statement);
+  }
 
   await client.query(`
     INSERT INTO forms (id, name, type) OVERRIDING SYSTEM VALUE VALUES
@@ -76,14 +79,17 @@ try {
       (3, 'Outer', 'composite_form'), (4, 'Inner', 'composite_form');
     INSERT INTO fields (id, name, type, simple_form_id) OVERRIDING SYSTEM VALUE VALUES
       (1, 'A field', 'text', 1), (2, 'B field', 'text', 2);
-    INSERT INTO form_compositions (composite_form_id, member_type, member_id) VALUES
-      (3, 'composite_form', 4), (4, 'simple_form', 1);
+    INSERT INTO form_compositions (id, name, composite_form_id, member_type, member_id) OVERRIDING SYSTEM VALUE VALUES
+      (1, 'Inner', 3, 'composite_form', 4),
+      (2, 'Home address', 4, 'simple_form', 1),
+      (3, 'Postal address', 4, 'simple_form', 1),
+      (4, 'Other address', 3, 'simple_form', 1);
     INSERT INTO form_inputs (id, form_id, form_type) OVERRIDING SYSTEM VALUE VALUES
       (10, 3, 'composite_form'), (13, 2, 'simple_form'), (14, 1, 'simple_form'), (15, 1, 'simple_form');
-    INSERT INTO form_inputs (id, parent_id, parent_form_id, form_id, form_type) OVERRIDING SYSTEM VALUE
-      VALUES (11, 10, 3, 4, 'composite_form');
-    INSERT INTO form_inputs (id, parent_id, parent_form_id, form_id, form_type) OVERRIDING SYSTEM VALUE
-      VALUES (12, 11, 4, 1, 'simple_form');
+    INSERT INTO form_inputs (id, parent_id, parent_form_id, composition_id, form_id, form_type) OVERRIDING SYSTEM VALUE
+      VALUES (11, 10, 3, 1, 4, 'composite_form');
+    INSERT INTO form_inputs (id, parent_id, parent_form_id, composition_id, form_id, form_type) OVERRIDING SYSTEM VALUE
+      VALUES (12, 11, 4, 2, 1, 'simple_form'), (16, 11, 4, 3, 1, 'simple_form');
     INSERT INTO field_inputs (form_input_id, field_id, form_id, value) VALUES (12, 1, 1, 'valid');
     INSERT INTO form_bindings (id, form_subject_type, form_id, form_type) OVERRIDING SYSTEM VALUE
       VALUES (1, 'geo_feature', 1, 'simple_form'), (2, 'geo_feature', 3, 'composite_form');
@@ -92,13 +98,43 @@ try {
   `);
 
   // Explicit fixture IDs must not collide with subsequent generated IDs.
-  for (const table of ["forms", "fields", "form_inputs", "form_bindings"]) {
+  for (const table of ["forms", "fields", "form_compositions", "form_inputs", "form_bindings"]) {
     await client.query(
       `SELECT setval(pg_get_serial_sequence('${table}', 'id'), 100)`,
     );
   }
 
+  await client.query(`
+    INSERT INTO form_inputs (parent_id, parent_form_id, composition_id, form_id, form_type, "index")
+      VALUES (11, 4, 2, 1, 'simple_form', 1);
+  `);
+
   const rejected: [string, string, string][] = [
+    [
+      "duplicate slot instance",
+      "23505",
+      "INSERT INTO form_inputs (parent_id, parent_form_id, composition_id, form_id, form_type) VALUES (11, 4, 2, 1, 'simple_form')",
+    ],
+    [
+      "slot from another parent form",
+      "23503",
+      "INSERT INTO form_inputs (parent_id, parent_form_id, composition_id, form_id, form_type) VALUES (11, 4, 4, 1, 'simple_form')",
+    ],
+    [
+      "missing slot",
+      "23503",
+      "INSERT INTO form_inputs (parent_id, parent_form_id, composition_id, form_id, form_type) VALUES (11, 4, 999, 1, 'simple_form')",
+    ],
+    [
+      "child without slot",
+      "23514",
+      "INSERT INTO form_inputs (parent_id, parent_form_id, form_id, form_type) VALUES (11, 4, 1, 'simple_form')",
+    ],
+    [
+      "root with slot",
+      "23514",
+      "INSERT INTO form_inputs (composition_id, form_id, form_type) VALUES (2, 1, 'simple_form')",
+    ],
     [
       "missing input form",
       "23503",
@@ -112,12 +148,12 @@ try {
     [
       "missing composition member",
       "23503",
-      "INSERT INTO form_compositions (composite_form_id, member_type, member_id) VALUES (3, 'simple_form', 999)",
+      "INSERT INTO form_compositions (name, composite_form_id, member_type, member_id) VALUES ('Member', 3, 'simple_form', 999)",
     ],
     [
       "simple composition owner",
       "23503",
-      "INSERT INTO form_compositions (composite_form_id, member_type, member_id) VALUES (1, 'simple_form', 2)",
+      "INSERT INTO form_compositions (name, composite_form_id, member_type, member_id) VALUES ('Member', 1, 'simple_form', 2)",
     ],
     [
       "missing binding form",
@@ -127,7 +163,7 @@ try {
     [
       "missing parent",
       "23503",
-      "INSERT INTO form_inputs (parent_id, parent_form_id, form_id, form_type) VALUES (999, 4, 1, 'simple_form')",
+      "INSERT INTO form_inputs (parent_id, parent_form_id, composition_id, form_id, form_type) VALUES (999, 4, 2, 1, 'simple_form')",
     ],
     [
       "incomplete parent identity",
@@ -142,12 +178,12 @@ try {
     [
       "simple input parent",
       "23503",
-      "INSERT INTO form_inputs (parent_id, parent_form_id, form_id, form_type) VALUES (14, 1, 2, 'simple_form')",
+      "INSERT INTO form_inputs (parent_id, parent_form_id, composition_id, form_id, form_type) VALUES (14, 1, 2, 2, 'simple_form')",
     ],
     [
       "child outside composition",
       "23503",
-      "INSERT INTO form_inputs (parent_id, parent_form_id, form_id, form_type) VALUES (10, 3, 2, 'simple_form')",
+      "INSERT INTO form_inputs (parent_id, parent_form_id, composition_id, form_id, form_type, \"index\") VALUES (10, 3, 1, 2, 'simple_form', 1)",
     ],
     [
       "wrong field form",
@@ -220,5 +256,7 @@ try {
     `Schema integrity passed: valid nested/simple/composite submissions and ${rejected.length} rejected writes.`,
   );
 } finally {
-  if (started) docker(["rm", "-f", container]);
+  if (started) {
+    docker(["rm", "-f", container]);
+  }
 }

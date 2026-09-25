@@ -12,9 +12,11 @@ Insert requirements:
 - A field's `simpleFormId` must identify a simple form.
 - A composition's owner must be composite; its member ID and type must match an
   existing form.
-- Root inputs omit both `parentId` and `parentFormId`. Independent submissions
-  of the same form are allowed. Child inputs supply both values; the parent must
-  be a composite input and the child must be a member of its form definition.
+- Root inputs omit `parentId`, `parentFormId`, and `compositionId`. Independent submissions
+  of the same form are allowed. Child inputs supply all three values; the parent must
+  be a composite input and the composition slot must belong to that parent form
+  and reference the child's form and type. Repeated instances are indexed within
+  each slot, so distinct slots can reuse the same member form.
 - Field inputs supply `formId` in addition to `formInputId` and `fieldId`. Both
   references must belong to that same simple form.
 - Input bindings supply `formId` and `formType` in addition to the binding and
@@ -30,7 +32,8 @@ their dependents are removed or updated; these constraints do not cascade delete
 These are schema definitions, not a data migration. Before applying them to an
 existing database, merge simple and composite definitions into `forms` and remap
 their IDs and every dependent reference; their old ID sequences can overlap.
-Backfill the new input identity columns, resolve inconsistent references and
+Backfill the new input identity columns, including `compositionId` for children,
+while the old parent/member mapping is still unambiguous. Resolve inconsistent references and
 duplicate null-subject bindings, then add the constraints. Regenerate the Amplify
 SQL schema after migrating the database. Do not use an automatic drop/recreate
 operation against populated tables as a substitute for this migration.
@@ -42,3 +45,7 @@ Run `pnpm --filter lake-pukaki test:schema`. Docker must be running and the
 available locally. The test generates SQL from the actual Drizzle definitions,
 applies it to a disposable container, tests valid and invalid writes, then removes
 that container. It does not load `.env` or connect to the application database.
+
+The member instance position is `index` (previously `form_index`). Existing
+databases need a column rename and regenerated Amplify SQL schema; the current
+client adapter maps the generated API's `form_index` to `index` until regeneration.

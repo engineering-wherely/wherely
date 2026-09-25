@@ -12,7 +12,8 @@ type ADSFormInputNode = Pick<
   | 'id'
   | 'form_id'
   | 'form_type'
-  | 'form_index'
+  | 'index'
+  | 'composition_id'
   | 'parent_id'
   | 'parent_form_id'
   | 'parent_form_type'
@@ -26,15 +27,15 @@ type ADSFormInputNode = Pick<
 
 type Page<T> = {
   data: T[];
-  nextToken?: string | null;
+  nextToken?: Maybe<string>;
   errors?: readonly { message: string }[];
 };
 
 async function listAll<T>(
-  fetchPage: (options: { nextToken?: string | null }) => Promise<Page<T>>
+  fetchPage: (options: { nextToken?: Maybe<string> }) => Promise<Page<T>>
 ): Promise<T[]> {
   const records: T[] = [];
-  let nextToken: string | null | undefined;
+  let nextToken: Maybe<string>;
 
   do {
     const page = await fetchPage({ nextToken });
@@ -48,10 +49,10 @@ async function listAll<T>(
   return records;
 }
 
-function sortInputs<T extends Pick<ADSFormInput, 'form_index' | 'id'>>(
+function sortInputs<T extends Pick<ADSFormInput, 'index' | 'id'>>(
   inputs: T[]
 ) {
-  return inputs.sort((a, b) => a.form_index - b.form_index || a.id - b.id);
+  return inputs.sort((a, b) => a.index - b.index || a.id - b.id);
 }
 
 async function loadRecord(
@@ -71,7 +72,8 @@ async function loadRecord(
     id: input.id,
     form_id: input.form_id,
     form_type: input.form_type,
-    form_index: input.form_index,
+    index: input.index,
+    composition_id: input.composition_id,
     parent_id: input.parent_id,
     parent_form_id: input.parent_form_id,
     parent_form_type: input.parent_form_type,
@@ -100,7 +102,8 @@ function toFormInputNode(input: ADSFormInputNode): FormInputNode {
     id: input.id,
     formId: input.form_id,
     formType: input.form_type,
-    formIndex: input.form_index,
+    index: input.index,
+    compositionId: input.composition_id ?? null,
     parentId: input.parent_id ?? null,
     parentFormId: input.parent_form_id ?? null,
     parentFormType: input.parent_form_type,

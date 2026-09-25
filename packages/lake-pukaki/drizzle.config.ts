@@ -30,7 +30,8 @@ export default defineConfig({
   dialect: "postgresql",
   extensionsFilters: ["postgis"],
   // Kit ignores a separate SSL object when credentials use the `url` form.
-  dbCredentials: rdsEndpoint && rdsCaPath
+  dbCredentials:
+    rdsEndpoint && rdsCaPath
       ? {
           host: databaseUrl.hostname,
           port: Number(databaseUrl.port || 5432),

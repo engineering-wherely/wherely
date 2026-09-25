@@ -19,5 +19,5 @@
   intended distinction between `null`, `undefined`, and both. Keep optional
   property and parameter syntax (`?`) when omission is intended.
 - Apply these conventions to new and modified code. Do not edit generated files.
-- Add `ASD` as a prefix to the names of types derived from the AmplifyDataSchema type.
+- Add `ADS` as a prefix to the names of types derived from the AmplifyDataSchema type.
   Refer to ADSFormInput in useFormInputNodes hook in mount-cook as an example.

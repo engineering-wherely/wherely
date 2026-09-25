@@ -22,9 +22,11 @@ const schema = generatedSqlSchema
     models.form_compositions.relationships({
       compositeForm: a.belongsTo("forms", "composite_form_id"),
       member: a.belongsTo("forms", "member_id"),
+      inputs: a.hasMany("form_inputs", "composition_id"),
     }),
     models.form_inputs.relationships({
       form: a.belongsTo("forms", "form_id"),
+      composition: a.belongsTo("form_compositions", "composition_id"),
       parent: a.belongsTo("form_inputs", "parent_id"),
       children: a.hasMany("form_inputs", "parent_id"),
       fieldInputs: a.hasMany("field_inputs", "form_input_id"),

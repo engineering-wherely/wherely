@@ -55,22 +55,23 @@ export const fieldsTable = snakeCase.table(
   ],
 );
 
+// Treat each form_compositions row as a named slot
 export const formCompositionsTable = snakeCase.table(
   "form_compositions",
   {
     id: makeId(),
+    name: makeName(),
     compositeFormId: makeForeignId(formsTable.id).notNull(),
     compositeFormType: formType()
       .generatedAlwaysAs(sql`'composite_form'::form_type`)
       .notNull(),
     memberType: formType().notNull(),
     memberId: bigint({ mode: "number" }).notNull(),
-    memberMin: integer().default(1),
-    memberMax: integer(),
-    memberCount: integer().default(1),
+    minInputCount: integer().notNull().default(1),
+    maxInputCount: integer().default(1),
   },
   (t) => [
-    unique().on(t.compositeFormId, t.memberType, t.memberId),
+    unique().on(t.id, t.compositeFormId, t.memberType, t.memberId),
     foreignKey({
       columns: [t.compositeFormId, t.compositeFormType],
       foreignColumns: [formsTable.id, formsTable.type],
@@ -87,6 +88,7 @@ export const formInputsTable = snakeCase.table(
   {
     id: makeId(),
     parentId: bigint({ mode: "number" }),
+    compositionId: bigint({ mode: "number" }),
     // Supplied together with parentId; the foreign keys verify the copied identity.
     parentFormId: bigint({ mode: "number" }),
     parentFormType: formType()
@@ -94,15 +96,15 @@ export const formInputsTable = snakeCase.table(
       .notNull(),
     formType: formType().notNull(),
     formId: bigint({ mode: "number" }).notNull(),
-    formIndex: integer().notNull().default(0),
+    index: integer().notNull().default(0),
   },
   (t) => [
     unique().on(t.id, t.formId, t.formType),
     // Null parents represent independent root submissions, which may repeat.
-    unique().on(t.parentId, t.formId, t.formType, t.formIndex),
+    unique().on(t.parentId, t.compositionId, t.index),
     check(
       "form_inputs_parent_pair",
-      sql`(${t.parentId} IS NULL) = (${t.parentFormId} IS NULL)`,
+      sql`((${t.parentId} IS NULL) = (${t.parentFormId} IS NULL)) AND ((${t.parentId} IS NULL) = (${t.compositionId} IS NULL))`,
     ),
     foreignKey({
       columns: [t.formId, t.formType],
@@ -115,8 +117,9 @@ export const formInputsTable = snakeCase.table(
     }),
     foreignKey({
       name: "form_inputs_member_fk",
-      columns: [t.parentFormId, t.formType, t.formId],
+      columns: [t.compositionId, t.parentFormId, t.formType, t.formId],
       foreignColumns: [
+        formCompositionsTable.id,
         formCompositionsTable.compositeFormId,
         formCompositionsTable.memberType,
         formCompositionsTable.memberId,

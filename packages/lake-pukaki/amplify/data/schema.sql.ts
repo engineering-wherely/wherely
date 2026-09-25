@@ -67,9 +67,9 @@ export const schema = configure({
         composite_form_type: a.ref("Form_compositionsComposite_form_type").required(),
         member_type: a.ref("Form_compositionsMember_type").required(),
         member_id: a.integer().required(),
-        member_min: a.integer(),
-        member_max: a.integer(),
-        member_count: a.integer()
+        name: a.string().required(),
+        min_input_count: a.integer().required(),
+        max_input_count: a.integer()
     }).identifier([
         "id"
     ]),
@@ -90,7 +90,8 @@ export const schema = configure({
         parent_form_type: a.ref("Form_inputsParent_form_type").required(),
         form_type: a.ref("Form_inputsForm_type").required(),
         form_id: a.integer().required(),
-        form_index: a.integer().required()
+        index: a.integer().required(),
+        composition_id: a.integer()
     }).identifier([
         "id"
     ]),
