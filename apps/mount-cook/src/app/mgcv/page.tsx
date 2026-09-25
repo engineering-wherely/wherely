@@ -6,6 +6,7 @@ import { MountCookMappingService } from '@/services/mapping/MountCookMappingServ
 import store from '@/store';
 import {
   Controls,
+  Drawer,
   GetStartedControl,
   Layers,
   MapArtisan,
@@ -83,6 +84,24 @@ export default function Home() {
             <VectorLayer geoLayerId={1} />
           </Layers>
         </MapArtisan>
+        <Drawer.Drawer swipeDirection="down" showSwipeHandle>
+          <Drawer.DrawerTrigger className="absolute bottom-4 left-4 rounded-lg bg-white px-4 py-3 text-sm font-medium text-slate-900 shadow-md focus-visible:outline-2 focus-visible:outline-offset-2">
+            Map details
+          </Drawer.DrawerTrigger>
+          <Drawer.DrawerContent>
+            <Drawer.DrawerHeader>
+              <Drawer.DrawerTitle>Map details</Drawer.DrawerTitle>
+              <Drawer.DrawerDescription>
+                Explore the map and its geographic features.
+              </Drawer.DrawerDescription>
+            </Drawer.DrawerHeader>
+            <Drawer.DrawerFooter className="pt-4">
+              <Drawer.DrawerClose className="self-end rounded-md border px-4 py-2 text-sm font-medium">
+                Close
+              </Drawer.DrawerClose>
+            </Drawer.DrawerFooter>
+          </Drawer.DrawerContent>
+        </Drawer.Drawer>
       </div>
     </MappingContextProvider>
   );
