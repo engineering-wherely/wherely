@@ -1,4 +1,9 @@
-import { makeForeignId, makeId, makeName } from "@/db/column-helpers";
+import {
+  makeDescription,
+  makeForeignId,
+  makeId,
+  makeName,
+} from "@/db/column-helpers";
 import { sql } from "drizzle-orm";
 import {
   bigint,
@@ -21,6 +26,7 @@ export const formsTable = snakeCase.table(
     id: makeId(),
     name: makeName(),
     type: formType().notNull(),
+    description: makeDescription(),
   },
   (t) => [unique().on(t.id, t.type)],
 );
@@ -45,6 +51,7 @@ export const fieldsTable = snakeCase.table(
     formType: formType()
       .generatedAlwaysAs(sql`'simple_form'::form_type`)
       .notNull(),
+    description: makeDescription(),
   },
   (t) => [
     unique().on(t.id, t.simpleFormId),

@@ -13,6 +13,8 @@ export const makeForeignId = (id: PgBigInt53) =>
 
 export const makeName = () => varchar({ length: 256 }).notNull();
 
+export const makeDescription = () => varchar({ length: 512 });
+
 export const timestamps = {
   updated_at: timestamp(),
   created_at: timestamp().defaultNow().notNull(),

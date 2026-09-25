@@ -48,7 +48,8 @@ export const schema = configure({
         type: a.ref("FieldsType"),
         required: a.boolean().required(),
         simple_form_id: a.integer().required(),
-        form_type: a.ref("FieldsForm_type").required()
+        form_type: a.ref("FieldsForm_type").required(),
+        description: a.string()
     }).identifier([
         "id"
     ]),
@@ -98,7 +99,8 @@ export const schema = configure({
     "forms": a.model({
         id: a.integer().required(),
         name: a.string().required(),
-        type: a.ref("FormsType").required()
+        type: a.ref("FormsType").required(),
+        description: a.string()
     }).identifier([
         "id"
     ]),
