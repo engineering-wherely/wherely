@@ -3,6 +3,16 @@ import { schema as generatedSqlSchema } from "./schema.sql";
 
 const schema = generatedSqlSchema
   .authorization((allow) => allow.publicApiKey().to(["read"]))
+  .setAuthorization((models) => [
+    models.forms.authorization((allow) => [
+      allow.publicApiKey().to(["read"]),
+      allow.groups(["Administrators"]).to(["read", "update"]),
+    ]),
+    models.fields.authorization((allow) => [
+      allow.publicApiKey().to(["read"]),
+      allow.groups(["Administrators"]).to(["read", "update"]),
+    ]),
+  ])
   .setRelationships((models) => [
     // IDs identify API relationships; PostgreSQL's composite foreign keys also
     // enforce form kinds and membership when records are written.
