@@ -4,11 +4,17 @@ const formatter = new Intl.NumberFormat("en-US", {
   minimumFractionDigits: 0,
 });
 
-export default function Total({ quantity }: { quantity: number }) {
+export default function Total({
+  quantity,
+  isPending,
+}: {
+  quantity: number;
+  isPending: boolean;
+}) {
   return (
     <div className="row total">
       <span>Total</span>
-      <span>{formatter.format(quantity * 9999)}</span>
+      {isPending ? "🌀 Updating..." : formatter.format(quantity * 9999)}
     </div>
   );
 }

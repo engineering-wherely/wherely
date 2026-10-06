@@ -1,20 +1,20 @@
 .checkout {
   box-sizing: border-box;
-  width: min(460px, calc(100% - 56px));
-  margin: 29px auto;
+  width: min(460px, calc(100% - 74px));
+  margin: 48px auto;
   padding: 16px;
   border: 1px solid #d0d0d0;
   border-radius: 8px;
   background: #fff;
   color: #111;
-  box-shadow: 0 0 0 10px #fff, 0 5px 4px 12px rgb(0 0 0 / 12%);
+  box-shadow: 0 0 0 19px #fff, 0 5px 4px 21px rgb(0 0 0 / 12%);
   font-family: Arial, Helvetica, sans-serif;
   font-size: 16px;
   line-height: 1.5;
 }
 
 .checkout h2 {
-  margin: 0 0 16px;
+  margin: 0 0 20px;
   font-size: 20px;
   font-weight: 700;
   line-height: 1.2;
@@ -28,36 +28,52 @@
   gap: 8px 16px;
 }
 
-.checkout .row + .row {
-  margin-top: 8px;
+.checkout .stepper {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin-left: auto;
 }
 
-.checkout button {
+.checkout .qty {
+  min-width: 1ch;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.checkout .buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.checkout .buttons button {
   box-sizing: border-box;
-  width: 150px;
-  max-width: 100%;
-  min-height: 35px;
-  margin-left: auto;
-  padding: 6px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 16px;
+  padding: 0;
   border: 1px solid #888;
   border-radius: 2px;
   background: #efefef;
   color: inherit;
   font: inherit;
-  font-size: 14px;
-  line-height: 1.5;
+  font-size: 12px;
+  line-height: 1;
   cursor: pointer;
 }
 
-.checkout button:hover {
+.checkout .buttons button:hover {
   background: #e3e3e3;
 }
 
-.checkout button:active {
+.checkout .buttons button:active {
   background: #d8d8d8;
 }
 
-.checkout button:focus-visible {
+.checkout .buttons button:focus-visible {
   outline: 2px solid #2563eb;
   outline-offset: 3px;
 }

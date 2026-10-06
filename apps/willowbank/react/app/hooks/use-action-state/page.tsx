@@ -1,21 +1,25 @@
 "use client";
 
-import { addToCart } from "@/app/hooks/use-action-state/api";
+import { addToCart, removeFromCart } from "@/app/hooks/use-action-state/api";
 import "@/app/hooks/use-action-state/checkout.css";
 import Total from "@/app/hooks/use-action-state/Total";
 import { startTransition, useActionState } from "react";
 
 export default function Checkout() {
   const [count, dispatchAction, isPending] = useActionState(
-    async (prevCount) => {
-      return await addToCart(prevCount);
-    },
+    updateCartAction,
     0,
   );
 
-  function handleClick() {
+  function handleAdd() {
     startTransition(() => {
-      dispatchAction();
+      dispatchAction({ type: "ADD" });
+    });
+  }
+
+  function handleRemove() {
+    startTransition(() => {
+      dispatchAction({ type: "REMOVE" });
     });
   }
 
@@ -24,13 +28,31 @@ export default function Checkout() {
       <h2>Checkout</h2>
       <div className="row">
         <span>Eras Tour Tickets</span>
-        <span>Qty: {count}</span>
-      </div>
-      <div className="row">
-        <button onClick={handleClick}>Add Ticket{isPending ? "🌀" : ""}</button>
+        <span className="stepper">
+          <span className="qty">{isPending ? "🌀" : count}</span>
+          <span className="buttons">
+            <button onClick={handleAdd}>▲</button>
+            <button onClick={handleRemove}>▼</button>
+          </span>
+        </span>
       </div>
       <hr />
-      <Total quantity={count} />
+      <Total quantity={count} isPending={isPending} />
     </div>
   );
+}
+
+async function updateCartAction(
+  prevCount: number,
+  actionPayload: { type: "ADD" | "REMOVE" },
+) {
+  switch (actionPayload.type) {
+    case "ADD": {
+      return await addToCart(prevCount);
+    }
+    case "REMOVE": {
+      return await removeFromCart(prevCount);
+    }
+  }
+  return prevCount;
 }
