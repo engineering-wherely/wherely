@@ -3,21 +3,30 @@
 import { addToCart, removeFromCart } from "@/app/hooks/use-action-state/api";
 import "@/app/hooks/use-action-state/checkout.css";
 import Total from "@/app/hooks/use-action-state/Total";
-import { useActionState } from "react";
+import { useActionState, useRef } from "react";
 import QuantityStepper from "./QuantityStepper";
 
 export default function Checkout() {
+  const abortRef = useRef<AbortController>(null);
   const [count, dispatchAction, isPending] = useActionState(
     updateCartAction,
     0,
   );
 
   function addAction() {
-    dispatchAction({ type: "ADD" });
+    if (abortRef.current) {
+      abortRef.current.abort();
+    }
+    abortRef.current = new AbortController();
+    dispatchAction({ type: "ADD", signal: abortRef.current.signal });
   }
 
   function removeAction() {
-    dispatchAction({ type: "REMOVE" });
+    if (abortRef.current) {
+      abortRef.current.abort();
+    }
+    abortRef.current = new AbortController();
+    dispatchAction({ type: "REMOVE", signal: abortRef.current.signal });
   }
 
   return (
@@ -39,14 +48,24 @@ export default function Checkout() {
 
 async function updateCartAction(
   prevCount: number,
-  actionPayload: { type: "ADD" | "REMOVE" },
+  actionPayload: { type: "ADD" | "REMOVE"; signal: AbortSignal },
 ) {
   switch (actionPayload.type) {
     case "ADD": {
-      return await addToCart(prevCount);
+      try {
+        return await addToCart(prevCount, { signal: actionPayload.signal });
+      } catch (e) {
+        return prevCount + 1;
+      }
     }
     case "REMOVE": {
-      return await removeFromCart(prevCount);
+      try {
+        return await removeFromCart(prevCount, {
+          signal: actionPayload.signal,
+        });
+      } catch (e) {
+        return Math.max(0, prevCount - 1);
+      }
     }
   }
   return prevCount;
