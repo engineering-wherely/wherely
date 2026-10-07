@@ -3,27 +3,21 @@
 import { addToCart, removeFromCart } from "@/app/hooks/use-action-state/api";
 import "@/app/hooks/use-action-state/checkout.css";
 import Total from "@/app/hooks/use-action-state/Total";
-import { startTransition, useActionState, useOptimistic } from "react";
+import { useActionState } from "react";
+import QuantityStepper from "./QuantityStepper";
 
 export default function Checkout() {
   const [count, dispatchAction, isPending] = useActionState(
     updateCartAction,
     0,
   );
-  const [optimisticCount, setOptimisticCount] = useOptimistic(count);
 
-  function handleAdd() {
-    startTransition(() => {
-      setOptimisticCount((c) => c + 1);
-      dispatchAction({ type: "ADD" });
-    });
+  function addAction() {
+    dispatchAction({ type: "ADD" });
   }
 
-  function handleRemove() {
-    startTransition(() => {
-      setOptimisticCount((c) => c - 1);
-      dispatchAction({ type: "REMOVE" });
-    });
+  function removeAction() {
+    dispatchAction({ type: "REMOVE" });
   }
 
   return (
@@ -31,17 +25,14 @@ export default function Checkout() {
       <h2>Checkout</h2>
       <div className="row">
         <span>Eras Tour Tickets</span>
-        <span className="stepper">
-          <span className="pending">{isPending && "🌀"}</span>
-          <span className="qty">{optimisticCount}</span>
-          <span className="buttons">
-            <button onClick={handleAdd}>▲</button>
-            <button onClick={handleRemove}>▼</button>
-          </span>
-        </span>
+        <QuantityStepper
+          value={count}
+          increaseAction={addAction}
+          decreaseAction={removeAction}
+        />
       </div>
       <hr />
-      <Total quantity={optimisticCount} isPending={isPending} />
+      <Total quantity={count} isPending={isPending} />
     </div>
   );
 }
