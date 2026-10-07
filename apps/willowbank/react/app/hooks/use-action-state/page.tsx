@@ -3,69 +3,57 @@
 import { addToCart, removeFromCart } from "@/app/hooks/use-action-state/api";
 import "@/app/hooks/use-action-state/checkout.css";
 import Total from "@/app/hooks/use-action-state/Total";
-import { useActionState, useRef } from "react";
-import QuantityStepper from "./QuantityStepper";
+import { useActionState, useOptimistic } from "react";
 
 export default function Checkout() {
-  const abortRef = useRef<AbortController>(null);
   const [count, dispatchAction, isPending] = useActionState(
     updateCartAction,
     0,
   );
+  const [optimisticCount, setOptimisticCount] = useOptimistic(count);
 
-  function addAction() {
-    if (abortRef.current) {
-      abortRef.current.abort();
+  async function formAction(formData: FormData) {
+    const type = formData.get("type");
+    if (type === "ADD") {
+      setOptimisticCount((c) => c + 1);
+    } else {
+      setOptimisticCount((c) => Math.max(0, c - 1));
     }
-    abortRef.current = new AbortController();
-    dispatchAction({ type: "ADD", signal: abortRef.current.signal });
-  }
-
-  function removeAction() {
-    if (abortRef.current) {
-      abortRef.current.abort();
-    }
-    abortRef.current = new AbortController();
-    dispatchAction({ type: "REMOVE", signal: abortRef.current.signal });
+    return dispatchAction(formData);
   }
 
   return (
-    <div className="checkout">
+    <form action={formAction} className="checkout">
       <h2>Checkout</h2>
       <div className="row">
         <span>Eras Tour Tickets</span>
-        <QuantityStepper
-          value={count}
-          increaseAction={addAction}
-          decreaseAction={removeAction}
-        />
+        <span className="stepper">
+          <span className="pending">{isPending && "🌀"}</span>
+          <span className="qty">{optimisticCount}</span>
+          <span className="buttons">
+            <button type="submit" name="type" value="ADD">
+              ▲
+            </button>
+            <button type="submit" name="type" value="REMOVE">
+              ▼
+            </button>
+          </span>
+        </span>
       </div>
       <hr />
       <Total quantity={count} isPending={isPending} />
-    </div>
+    </form>
   );
 }
 
-async function updateCartAction(
-  prevCount: number,
-  actionPayload: { type: "ADD" | "REMOVE"; signal: AbortSignal },
-) {
-  switch (actionPayload.type) {
+async function updateCartAction(prevCount: number, formData: FormData) {
+  const type = formData.get("type");
+  switch (type) {
     case "ADD": {
-      try {
-        return await addToCart(prevCount, { signal: actionPayload.signal });
-      } catch (e) {
-        return prevCount + 1;
-      }
+      return await addToCart(prevCount);
     }
     case "REMOVE": {
-      try {
-        return await removeFromCart(prevCount, {
-          signal: actionPayload.signal,
-        });
-      } catch (e) {
-        return Math.max(0, prevCount - 1);
-      }
+      return await removeFromCart(prevCount);
     }
   }
   return prevCount;
