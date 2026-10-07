@@ -3,22 +3,25 @@
 import { addToCart, removeFromCart } from "@/app/hooks/use-action-state/api";
 import "@/app/hooks/use-action-state/checkout.css";
 import Total from "@/app/hooks/use-action-state/Total";
-import { startTransition, useActionState } from "react";
+import { startTransition, useActionState, useOptimistic } from "react";
 
 export default function Checkout() {
   const [count, dispatchAction, isPending] = useActionState(
     updateCartAction,
     0,
   );
+  const [optimisticCount, setOptimisticCount] = useOptimistic(count);
 
   function handleAdd() {
     startTransition(() => {
+      setOptimisticCount((c) => c + 1);
       dispatchAction({ type: "ADD" });
     });
   }
 
   function handleRemove() {
     startTransition(() => {
+      setOptimisticCount((c) => c - 1);
       dispatchAction({ type: "REMOVE" });
     });
   }
@@ -29,7 +32,8 @@ export default function Checkout() {
       <div className="row">
         <span>Eras Tour Tickets</span>
         <span className="stepper">
-          <span className="qty">{isPending ? "🌀" : count}</span>
+          <span className="pending">{isPending && "🌀"}</span>
+          <span className="qty">{optimisticCount}</span>
           <span className="buttons">
             <button onClick={handleAdd}>▲</button>
             <button onClick={handleRemove}>▼</button>
@@ -37,7 +41,7 @@ export default function Checkout() {
         </span>
       </div>
       <hr />
-      <Total quantity={count} isPending={isPending} />
+      <Total quantity={optimisticCount} isPending={isPending} />
     </div>
   );
 }
