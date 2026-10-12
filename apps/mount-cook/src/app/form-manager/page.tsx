@@ -1,14 +1,12 @@
 'use client';
 
 import AdminAccess from '@/app/form-manager/components/AdminAccess';
-import {
-  FieldEditor,
-  FormEditor,
-} from '@/app/form-manager/components/DefinitionEditor';
 import Split from '@/app/form-manager/components/Split';
 import type { Nullable } from 'np-westland/types';
 import { useMemo, useState } from 'react';
 import { buildHierarchy } from './bl';
+import FieldEditor from './components/FieldEditor';
+import FormEditor from './components/FormEditor';
 import Hierarchy from './components/Hierarchy';
 import InputDetails from './components/InputDetails';
 import Notice from './components/Notice';
