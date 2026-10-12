@@ -18,9 +18,5 @@ export default function ({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-    <Authenticator components={components} hideSignUp>
-      {children}
-    </Authenticator>
-  );
+  return <Authenticator components={components}>{children}</Authenticator>;
 }

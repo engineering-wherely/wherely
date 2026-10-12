@@ -1,9 +1,9 @@
 'use client';
 
 import { useAdminAccess } from '@/app/form-manager/components/AdminAccess';
-import type { ADSField, ADSForm } from '@/app/form-manager/data';
-import { useSaveDefinition } from '@/app/form-manager/mutations';
+import { useSaveDefinition } from '@/app/form-manager/hooks/useSaveDefinition';
 import { useState } from 'react';
+import type { ADSField, ADSForm } from '../types';
 
 const controlClass =
   'mt-1 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm focus:outline-2 focus:outline-indigo-500';
