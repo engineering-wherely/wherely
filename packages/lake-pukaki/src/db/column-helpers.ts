@@ -6,7 +6,7 @@ import {
 } from "drizzle-orm/pg-core";
 
 export const makeId = () =>
-  bigint({ mode: "number" }).primaryKey().generatedAlwaysAsIdentity();
+  bigint({ mode: "number" }).primaryKey().generatedByDefaultAsIdentity();
 
 export const makeForeignId = (id: PgBigInt53) =>
   bigint({ mode: "number" }).references(() => id);
