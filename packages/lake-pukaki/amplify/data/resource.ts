@@ -76,4 +76,9 @@ export const data = defineData({
       expiresInDays: 30,
     },
   },
+  logging: {
+    fieldLogLevel: "error",
+    excludeVerboseContent: true,
+    retention: "1 week",
+  },
 });
