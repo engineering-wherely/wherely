@@ -1,7 +1,7 @@
-import type { ADSField, ADSForm } from '@/app/form-manager/data';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { generateClient } from 'aws-amplify/data';
 import type { AmplifyDataSchema } from 'lake-pukaki';
+import type { ADSField, ADSForm } from '../types';
 
 type ADSFormUpdate = Pick<ADSForm, 'id' | 'name' | 'description'>;
 type ADSFieldUpdate = Pick<
