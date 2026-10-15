@@ -1,21 +1,22 @@
 'use client';
 
+import { buildHierarchy } from '@/app/form-manager/bl';
 import AdminAccess from '@/app/form-manager/components/AdminAccess';
+import FieldEditor from '@/app/form-manager/components/FieldEditor';
+import FormActions from '@/app/form-manager/components/FormActions';
+import FormEditor from '@/app/form-manager/components/FormEditor';
+import Hierarchy from '@/app/form-manager/components/Hierarchy';
+import InputDetails from '@/app/form-manager/components/InputDetails';
+import Notice from '@/app/form-manager/components/Notice';
+import Panel from '@/app/form-manager/components/Panel';
+import QueryError from '@/app/form-manager/components/QueryError';
 import Split from '@/app/form-manager/components/Split';
+import useCatalog from '@/app/form-manager/hooks/useCatalog';
+import useFields from '@/app/form-manager/hooks/useFields';
+import useInputs from '@/app/form-manager/hooks/useInputs';
+import type { ADSFormInput, ADSOccurrence } from '@/app/form-manager/types';
 import type { Nullable } from 'np-westland/types';
 import { useMemo, useState } from 'react';
-import { buildHierarchy } from './bl';
-import FieldEditor from './components/FieldEditor';
-import FormEditor from './components/FormEditor';
-import Hierarchy from './components/Hierarchy';
-import InputDetails from './components/InputDetails';
-import Notice from './components/Notice';
-import Panel from './components/Panel';
-import QueryError from './components/QueryError';
-import useCatalog from './hooks/useCatalog';
-import useFields from './hooks/useFields';
-import useInputs from './hooks/useInputs';
-import type { ADSFormInput, ADSOccurrence } from './types';
 
 export default function FormManagerPage() {
   const catalog = useCatalog();
@@ -229,24 +230,46 @@ export default function FormManagerPage() {
                   title="All forms"
                   subtitle="Expand a composite form to explore its slots"
                 >
-                  {catalog.isPending ? (
-                    <Notice>Loading form hierarchy…</Notice>
-                  ) : catalog.isError ? (
-                    <QueryError
-                      error={catalog.error}
-                      retry={() => {
-                        void catalog.refetch();
+                  <div className="flex h-full min-h-0 flex-col">
+                    <FormActions
+                      form={form}
+                      onCreated={(created) => {
+                        select({
+                          id: `form:${created.id}`,
+                          name: created.name,
+                          form: created,
+                          cycle: false,
+                        });
+                      }}
+                      onDeleted={(id) => {
+                        setSelected((current) =>
+                          current?.form.id === id ? null : current
+                        );
+                        setSlotOnly(false);
+                        setTrail([]);
                       }}
                     />
-                  ) : !forms.length ? (
-                    <Notice>No forms have been created yet.</Notice>
-                  ) : (
-                    <Hierarchy
-                      nodes={hierarchy}
-                      selected={selected}
-                      onSelect={select}
-                    />
-                  )}
+                    <div className="min-h-0 flex-1">
+                      {catalog.isPending ? (
+                        <Notice>Loading form hierarchy…</Notice>
+                      ) : catalog.isError ? (
+                        <QueryError
+                          error={catalog.error}
+                          retry={() => {
+                            void catalog.refetch();
+                          }}
+                        />
+                      ) : !forms.length ? (
+                        <Notice>No forms have been created yet.</Notice>
+                      ) : (
+                        <Hierarchy
+                          nodes={hierarchy}
+                          selected={selected}
+                          onSelect={select}
+                        />
+                      )}
+                    </div>
+                  </div>
                 </Panel>
               }
               second={

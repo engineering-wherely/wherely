@@ -6,13 +6,29 @@ const schema = generatedSqlSchema
   .setAuthorization((models) => [
     models.forms.authorization((allow) => [
       allow.publicApiKey().to(["read"]),
-      allow.groups(["Administrators"]).to(["read", "update"]),
+      allow.groups(["Administrators"]).to(["read", "update", "delete"]),
     ]),
     models.fields.authorization((allow) => [
       allow.publicApiKey().to(["read"]),
       allow.groups(["Administrators"]).to(["read", "update"]),
     ]),
   ])
+  .addToSchema({
+    createFormDefinition: a
+      .mutation()
+      .arguments({
+        name: a.string().required(),
+        description: a.string(),
+        type: a.ref("FormsType").required(),
+      })
+      .returns(a.ref("forms").array())
+      .authorization((allow) => [allow.groups(["Administrators"])])
+      .handler(
+        a.handler.inlineSql(
+          "INSERT INTO forms (name, description, type) SELECT BTRIM(:name), :description, CAST(:type AS form_type) WHERE LENGTH(BTRIM(:name)) > 0 RETURNING *",
+        ),
+      ),
+  })
   .setRelationships((models) => [
     // IDs identify API relationships; PostgreSQL's composite foreign keys also
     // enforce form kinds and membership when records are written.
