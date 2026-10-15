@@ -1,10 +1,15 @@
+import FieldInputActions from '@/app/form-manager/components/FieldInputActions';
+import Notice from '@/app/form-manager/components/Notice';
+import Panel from '@/app/form-manager/components/Panel';
+import QueryError from '@/app/form-manager/components/QueryError';
+import useFields from '@/app/form-manager/hooks/useFields';
+import useInputDetails from '@/app/form-manager/hooks/useInputDetails';
+import type {
+  ADSComposition,
+  ADSForm,
+  ADSFormInput,
+} from '@/app/form-manager/types';
 import type { Nullable } from 'np-westland/types';
-import useFields from '../hooks/useFields';
-import useInputDetails from '../hooks/useInputDetails';
-import type { ADSComposition, ADSForm, ADSFormInput } from '../types';
-import Notice from './Notice';
-import Panel from './Panel';
-import QueryError from './QueryError';
 
 const buttonClass =
   'rounded border border-slate-200 px-3 py-1.5 text-sm hover:bg-slate-100 focus-visible:outline-2 focus-visible:outline-indigo-600';
@@ -110,6 +115,12 @@ export default function InputDetails({
                     className={`whitespace-pre-wrap break-words ${!record || record.value == null || record.value === '' ? 'italic text-slate-400' : 'text-slate-700'}`}
                   >
                     {value}
+                    <FieldInputActions
+                      key={`${input.id}:${field.id}:${record?.id ?? 'new'}`}
+                      input={input}
+                      field={field}
+                      record={record ?? null}
+                    />
                   </dd>
                 </div>
               );

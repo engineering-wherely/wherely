@@ -45,3 +45,16 @@ a confirmation naming that field. Fields with recorded inputs cannot be deleted;
 database foreign keys enforce this protection. Successful changes refresh Form
 Manager queries, while failed requests retain the draft or confirmation. Switching
 forms resets the creation draft so it cannot be submitted to another form.
+
+The middle column supports administrator-only creation and removal of form inputs.
+Choose independent placement or a composition slot, its parent input, and a
+non-negative index. The slot-only view defaults creation to that slot. Creation
+selects the new input; removal clears its details after confirmation. Form inputs
+with child inputs, field values, or bindings cannot be deleted.
+
+For simple form inputs, each field in Input Details offers Add field input when
+no value exists, or Remove field input when recorded. A blank text value is an
+empty string; the null checkbox records SQL NULL. Removing a value preserves its
+field definition. The API derives ownership from the selected form/input and the
+database enforces matching ownership, slot membership, and uniqueness. Deploy the
+updated backend to enable the administrator mutations and delete permissions.

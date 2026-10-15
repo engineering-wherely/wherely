@@ -6,6 +6,7 @@ import AdminAccess from '@/app/form-manager/components/AdminAccess';
 import FieldEditor from '@/app/form-manager/components/FieldEditor';
 import FormActions from '@/app/form-manager/components/FormActions';
 import FormEditor from '@/app/form-manager/components/FormEditor';
+import FormInputActions from '@/app/form-manager/components/FormInputActions';
 import Hierarchy from '@/app/form-manager/components/Hierarchy';
 import InputDetails from '@/app/form-manager/components/InputDetails';
 import Notice from '@/app/form-manager/components/Notice';
@@ -68,6 +69,26 @@ export default function FormManagerPage() {
         )
       }
     >
+      {form && (
+        <FormInputActions
+          key={`${form.id}:${slotOnly ? selected?.slot?.id : 'all'}`}
+          form={form}
+          slots={slots}
+          input={trail[0]?.form_id === form.id ? trail[0] : null}
+          initialSlot={slotOnly ? (selected?.slot?.id ?? null) : null}
+          onCreated={(created) => {
+            if (slotOnly && created.composition_id !== selected?.slot?.id) {
+              setSlotOnly(false);
+            }
+            setTrail([created]);
+          }}
+          onRemoved={(id) => {
+            setTrail((current) =>
+              current.some((item) => item.id === id) ? [] : current
+            );
+          }}
+        />
+      )}
       {!form ? (
         <Notice>Select a form from the hierarchy.</Notice>
       ) : inputs.isPending ? (

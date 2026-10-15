@@ -4,6 +4,14 @@ import { schema as generatedSqlSchema } from "./schema.sql";
 const schema = generatedSqlSchema
   .authorization((allow) => allow.publicApiKey().to(["read"]))
   .setAuthorization((models) => [
+    models.form_inputs.authorization((allow) => [
+      allow.publicApiKey().to(["read"]),
+      allow.groups(["Administrators"]).to(["read", "delete"]),
+    ]),
+    models.field_inputs.authorization((allow) => [
+      allow.publicApiKey().to(["read"]),
+      allow.groups(["Administrators"]).to(["read", "delete"]),
+    ]),
     models.forms.authorization((allow) => [
       allow.publicApiKey().to(["read"]),
       allow.groups(["Administrators"]).to(["read", "update", "delete"]),
@@ -14,6 +22,35 @@ const schema = generatedSqlSchema
     ]),
   ])
   .addToSchema({
+    createFormInput: a
+      .mutation()
+      .arguments({
+        form_id: a.integer().required(),
+        parent_id: a.integer(),
+        composition_id: a.integer(),
+        index: a.integer().required(),
+      })
+      .returns(a.ref("form_inputs").array())
+      .authorization((allow) => [allow.groups(["Administrators"])])
+      .handler(
+        a.handler.inlineSql(
+          "INSERT INTO form_inputs (form_id, form_type, parent_id, parent_form_id, composition_id, index) SELECT f.id, f.type, :parent_id, p.form_id, :composition_id, :index FROM forms f LEFT JOIN form_inputs p ON p.id = :parent_id WHERE f.id = :form_id AND :index >= 0 AND (CAST(:parent_id AS bigint) IS NULL OR p.id IS NOT NULL) RETURNING *",
+        ),
+      ),
+    createFieldInput: a
+      .mutation()
+      .arguments({
+        form_input_id: a.integer().required(),
+        field_id: a.integer().required(),
+        value: a.string(),
+      })
+      .returns(a.ref("field_inputs").array())
+      .authorization((allow) => [allow.groups(["Administrators"])])
+      .handler(
+        a.handler.inlineSql(
+          "INSERT INTO field_inputs (form_input_id, field_id, form_id, value) SELECT i.id, :field_id, i.form_id, :value FROM form_inputs i WHERE i.id = :form_input_id RETURNING *",
+        ),
+      ),
     createFieldDefinition: a
       .mutation()
       .arguments({

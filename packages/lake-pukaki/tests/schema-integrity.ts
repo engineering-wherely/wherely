@@ -138,6 +138,78 @@ try {
       VALUES (11, 4, 2, 1, 'simple_form', 1);
   `);
 
+  // Amplify binds each occurrence separately. PREPARE without declared types
+  // exercises PostgreSQL parameter inference, including a nullable parent.
+  const parameterizedInputSql = `
+    INSERT INTO form_inputs (form_id, form_type, parent_id, parent_form_id, composition_id, index)
+    SELECT f.id, f.type, $1, p.form_id, $2, $3
+    FROM forms f LEFT JOIN form_inputs p ON p.id = $4
+    WHERE f.id = $5 AND $6 >= 0 AND (CAST($7 AS bigint) IS NULL OR p.id IS NOT NULL)
+    RETURNING *
+  `;
+  await assert.rejects(
+    client.query(
+      `PREPARE broken_input AS ${parameterizedInputSql.replace("CAST($7 AS bigint)", "$7")}`,
+    ),
+    (error: unknown) => (error as { code?: string }).code === "42P18",
+  );
+  const parameterizedInputs = await client.query(`
+    BEGIN;
+    PREPARE create_input AS ${parameterizedInputSql};
+    EXECUTE create_input(NULL, NULL, 0, NULL, 3, 0, NULL);
+    EXECUTE create_input(10, 4, 2, 10, 1, 2, 10);
+    EXECUTE create_input(999999, 4, 2, 999999, 1, 2, 999999);
+    EXECUTE create_input(NULL, NULL, -1, NULL, 3, -1, NULL);
+    DEALLOCATE create_input;
+    ROLLBACK;
+  `);
+  assert.equal((parameterizedInputs.match(/INSERT 0 1/g) ?? []).length, 2);
+  assert.equal((parameterizedInputs.match(/INSERT 0 0/g) ?? []).length, 2);
+
+  // Exercise input creation with database-assigned IDs and copied ownership.
+  await client.query(`
+    DO $$
+    DECLARE root_id bigint; child_id bigint; field_input_id bigint; stored_value text;
+    BEGIN
+      INSERT INTO form_inputs (form_id, form_type, parent_id, parent_form_id, composition_id, index)
+        SELECT f.id, f.type, NULL, p.form_id, NULL, 0
+        FROM forms f LEFT JOIN form_inputs p ON p.id = NULL
+        WHERE f.id = 3 RETURNING id INTO root_id;
+      INSERT INTO form_inputs (form_id, form_type, parent_id, parent_form_id, composition_id, index)
+        SELECT f.id, f.type, root_id, p.form_id, 4, 0
+        FROM forms f LEFT JOIN form_inputs p ON p.id = root_id
+        WHERE f.id = 1 RETURNING id INTO child_id;
+      INSERT INTO field_inputs (form_input_id, field_id, form_id, value)
+        SELECT i.id, 1, i.form_id, '' FROM form_inputs i WHERE i.id = child_id
+        RETURNING id, value INTO field_input_id, stored_value;
+      IF stored_value IS DISTINCT FROM '' THEN
+        RAISE EXCEPTION 'Empty string was not preserved';
+      END IF;
+      BEGIN
+        DELETE FROM form_inputs WHERE id = child_id;
+        RAISE EXCEPTION 'Deleted input with field values';
+      EXCEPTION WHEN foreign_key_violation THEN
+        NULL;
+      END;
+      BEGIN
+        DELETE FROM form_inputs WHERE id = root_id;
+        RAISE EXCEPTION 'Deleted input with children';
+      EXCEPTION WHEN foreign_key_violation THEN
+        NULL;
+      END;
+      DELETE FROM field_inputs WHERE id = field_input_id;
+      INSERT INTO field_inputs (form_input_id, field_id, form_id, value)
+        SELECT i.id, 1, i.form_id, NULL FROM form_inputs i WHERE i.id = child_id
+        RETURNING id, value INTO field_input_id, stored_value;
+      IF stored_value IS NOT NULL THEN
+        RAISE EXCEPTION 'Null value was not preserved';
+      END IF;
+      DELETE FROM field_inputs WHERE id = field_input_id;
+      DELETE FROM form_inputs WHERE id = child_id;
+      DELETE FROM form_inputs WHERE id = root_id;
+    END $$;
+  `);
+
   const rejected: [string, string, string][] = [
     [
       "duplicate slot instance",
