@@ -6,30 +6,9 @@ import { secret } from "@aws-amplify/backend";
 
 export const schema = configure({
     database: {
-        identifier: "IDBwkBk1CcGcODBLpw4uwbbA",
+        identifier: "IDzvn2KdzOln7nO6inBAhfag",
         engine: "postgresql",
-        connectionUri: secret("SQL_CONNECTION_STRING"),
-        vpcConfig: {
-            vpcId: "vpc-034ece14ded8f8515",
-            securityGroupIds: [
-                "sg-026e039e90223a956",
-                "sg-0338a102582ede483"
-            ],
-            subnetAvailabilityZones: [
-                {
-                    subnetId: "subnet-001c80181de57ec86",
-                    availabilityZone: "ap-southeast-2c"
-                },
-                {
-                    subnetId: "subnet-06cdf05ea64bed404",
-                    availabilityZone: "ap-southeast-2b"
-                },
-                {
-                    subnetId: "subnet-0dbf5f7fd49eacbca",
-                    availabilityZone: "ap-southeast-2a"
-                }
-            ]
-        }
+        connectionUri: secret("SQL_CONNECTION_STRING")
     }
 }).schema({
     "field_inputs": a.model({
@@ -64,11 +43,11 @@ export const schema = configure({
     ]),
     "form_compositions": a.model({
         id: a.integer().required(),
+        name: a.string().required(),
         composite_form_id: a.integer().required(),
         composite_form_type: a.ref("Form_compositionsComposite_form_type").required(),
         member_type: a.ref("Form_compositionsMember_type").required(),
         member_id: a.integer().required(),
-        name: a.string().required(),
         min_input_count: a.integer().required(),
         max_input_count: a.integer()
     }).identifier([
@@ -87,12 +66,12 @@ export const schema = configure({
     "form_inputs": a.model({
         id: a.integer().required(),
         parent_id: a.integer(),
+        composition_id: a.integer(),
         parent_form_id: a.integer(),
         parent_form_type: a.ref("Form_inputsParent_form_type").required(),
         form_type: a.ref("Form_inputsForm_type").required(),
         form_id: a.integer().required(),
-        index: a.integer().required(),
-        composition_id: a.integer()
+        index: a.integer().required()
     }).identifier([
         "id"
     ]),

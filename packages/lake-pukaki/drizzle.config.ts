@@ -4,15 +4,24 @@ import { readFileSync } from "node:fs";
 
 const rdsEndpoint = process.env.RDS_ENDPOINT;
 const rdsCaPath = process.env.RDS_CA_PATH;
-const databaseUrl = new URL(process.env.DATABASE_URL!);
+const connectionString = process.env.DATABASE_URL;
 
-if (Boolean(rdsEndpoint) !== Boolean(rdsCaPath)) {
+if (!connectionString) {
+  throw new Error("Set DATABASE_URL to a PostgreSQL connection string.");
+}
+
+const databaseUrl = new URL(connectionString);
+// Neon URLs carry their own TLS settings, even when RDS variables remain set.
+const isNeon = databaseUrl.hostname.endsWith(".neon.tech");
+const useRdsTls = !isNeon && rdsEndpoint && rdsCaPath;
+
+if (!isNeon && Boolean(rdsEndpoint) !== Boolean(rdsCaPath)) {
   throw new Error(
     "Set both RDS_ENDPOINT and RDS_CA_PATH to enable verified TLS.",
   );
 }
 
-if (rdsEndpoint && rdsCaPath) {
+if (useRdsTls) {
   if (
     ["sslmode", "sslrootcert", "sslcert", "sslkey", "ssl"].some((key) =>
       databaseUrl.searchParams.has(key),
@@ -31,7 +40,7 @@ export default defineConfig({
   extensionsFilters: ["postgis"],
   // Kit ignores a separate SSL object when credentials use the `url` form.
   dbCredentials:
-    rdsEndpoint && rdsCaPath
+    useRdsTls
       ? {
           host: databaseUrl.hostname,
           port: Number(databaseUrl.port || 5432),
@@ -44,5 +53,5 @@ export default defineConfig({
             servername: rdsEndpoint,
           },
         }
-      : { url: process.env.DATABASE_URL! },
+      : { url: connectionString },
 });
