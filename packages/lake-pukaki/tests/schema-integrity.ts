@@ -58,7 +58,15 @@ try {
   started = true;
   for (let attempt = 0; ; attempt++) {
     try {
-      docker(["exec", container, "pg_isready", "-h", "127.0.0.1", "-U", "postgres"]);
+      docker([
+        "exec",
+        container,
+        "pg_isready",
+        "-h",
+        "127.0.0.1",
+        "-U",
+        "postgres",
+      ]);
       break;
     } catch (error) {
       if (attempt === 60) {
@@ -98,11 +106,32 @@ try {
   `);
 
   // Explicit fixture IDs must not collide with subsequent generated IDs.
-  for (const table of ["forms", "fields", "form_compositions", "form_inputs", "form_bindings"]) {
+  for (const table of [
+    "forms",
+    "fields",
+    "form_compositions",
+    "form_inputs",
+    "form_bindings",
+  ]) {
     await client.query(
       `SELECT setval(pg_get_serial_sequence('${table}', 'id'), 100)`,
     );
   }
+
+  // Creation uses the database identity and generated form kind, then allows
+  // removal when no recorded input refers to the field.
+  const created = await client.query(`
+    INSERT INTO fields (name, description, type, required, simple_form_id)
+      SELECT BTRIM('  New field  '), NULL, CAST('text' AS field_type), false, 1
+      WHERE LENGTH(BTRIM('  New field  ')) > 0
+      RETURNING id, name, type, required, simple_form_id, form_type;
+  `);
+  assert.match(created, /New field/);
+  assert.match(created, /simple_form/);
+  const removed = await client.query(
+    "DELETE FROM fields WHERE name = 'New field' RETURNING id",
+  );
+  assert.match(removed, /DELETE 1/);
 
   await client.query(`
     INSERT INTO form_inputs (parent_id, parent_form_id, composition_id, form_id, form_type, "index")
@@ -219,6 +248,11 @@ try {
       "duplicate null input subject",
       "23505",
       "INSERT INTO form_input_bindings (form_binding_id, form_input_id, form_id, form_type) VALUES (1, 12, 1, 'simple_form')",
+    ],
+    [
+      "delete field with recorded input",
+      "23503",
+      "DELETE FROM fields WHERE id = 1",
     ],
     ["delete referenced form", "23503", "DELETE FROM forms WHERE id = 1"],
     [

@@ -10,10 +10,26 @@ const schema = generatedSqlSchema
     ]),
     models.fields.authorization((allow) => [
       allow.publicApiKey().to(["read"]),
-      allow.groups(["Administrators"]).to(["read", "update"]),
+      allow.groups(["Administrators"]).to(["read", "update", "delete"]),
     ]),
   ])
   .addToSchema({
+    createFieldDefinition: a
+      .mutation()
+      .arguments({
+        name: a.string().required(),
+        description: a.string(),
+        type: a.ref("FieldsType"),
+        required: a.boolean().required(),
+        simple_form_id: a.integer().required(),
+      })
+      .returns(a.ref("fields").array())
+      .authorization((allow) => [allow.groups(["Administrators"])])
+      .handler(
+        a.handler.inlineSql(
+          "INSERT INTO fields (name, description, type, required, simple_form_id) SELECT BTRIM(:name), :description, CAST(:type AS field_type), :required, :simple_form_id WHERE LENGTH(BTRIM(:name)) > 0 RETURNING *",
+        ),
+      ),
     createFormDefinition: a
       .mutation()
       .arguments({

@@ -8,8 +8,8 @@ editor because they do not own fields.
 
 Saving requires a Cognito user in the `Administrators` group. The Amplify backend
 defines email sign-in and grants that group read/update/delete access to `forms`
-and read/update access to `fields`. An administrator-only `createFormDefinition`
-mutation creates forms using database-generated IDs. Existing public API-key access remains read-only. The UI uses
+and `fields`. Administrator-only `createFormDefinition` and
+`createFieldDefinition` mutations create definitions using database-generated IDs. Existing public API-key access remains read-only. The UI uses
 `userPool` authorization for mutations and reports server errors without clearing
 the draft. Successful saves invalidate the Form Manager queries.
 
@@ -37,3 +37,11 @@ a composition slot), clears the selection after success, and refreshes queries.
 Database foreign keys reject removal of forms with fields, inputs, composition
 slots, or bindings; errors keep the confirmation open. No related records are
 automatically deleted. Deploy the updated backend before using these controls.
+
+The Fields section offers Add field for the selected simple form, including when
+it has no fields. Name, optional description, type (including unspecified), and
+the required flag can be set. Each existing field has a Remove field action with
+a confirmation naming that field. Fields with recorded inputs cannot be deleted;
+database foreign keys enforce this protection. Successful changes refresh Form
+Manager queries, while failed requests retain the draft or confirmation. Switching
+forms resets the creation draft so it cannot be submitted to another form.

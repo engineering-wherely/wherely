@@ -1,6 +1,7 @@
 'use client';
 
 import { buildHierarchy } from '@/app/form-manager/bl';
+import AddField from '@/app/form-manager/components/AddField';
 import AdminAccess from '@/app/form-manager/components/AdminAccess';
 import FieldEditor from '@/app/form-manager/components/FieldEditor';
 import FormActions from '@/app/form-manager/components/FormActions';
@@ -155,6 +156,9 @@ export default function FormManagerPage() {
               : 'Fields of the selected form'
           }
         >
+          {form?.type === 'simple_form' && (
+            <AddField key={form.id} form={form} />
+          )}
           {!form ? (
             <Notice>Select a form to view and edit its fields.</Notice>
           ) : form.type === 'composite_form' ? (
