@@ -36,5 +36,10 @@
 }
 
 .np-westland-controls > .np-westland-get-started-control {
+  order: 0;
   flex-shrink: 0;
+}
+
+.np-westland-controls > .np-westland-year-month-range-list-control {
+  order: 1;
 }

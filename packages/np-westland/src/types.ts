@@ -8,3 +8,5 @@ export type {
   Longitude,
 } from '@/features/mapping/types';
 export type { Maybe, Nullable, Optional } from '@/types/common';
+
+export type { PersonalDetails } from '@/features/forms/personal-details/types';

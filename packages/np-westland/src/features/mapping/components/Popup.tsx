@@ -17,6 +17,8 @@ type PopupCoordinate = Coordinate | ((map: Map) => Optional<Coordinate>);
 export type PopupProps = HTMLAttributes<HTMLDivElement> & {
   children: ReactNode;
   closeLabel?: string;
+  /** Portal destination for the close button; defaults to the popup shell. */
+  closeButtonTarget?: Nullable<HTMLElement>;
   coordinate?: PopupCoordinate;
   defaultOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
@@ -31,6 +33,7 @@ export function Popup({
   children,
   className,
   closeLabel = 'Close popup',
+  closeButtonTarget,
   coordinate,
   defaultOpen = true,
   onOpenChange,
@@ -131,22 +134,26 @@ export function Popup({
     return null;
   }
 
+  const closeButton = showCloseButton ? (
+    <button
+      type='button'
+      aria-label={closeLabel}
+      className='np-westland-popup__close'
+      onClick={handleClose}
+    >
+      <XIcon aria-hidden='true' />
+    </button>
+  ) : null;
+
   return createPortal(
     <div
       className={cn('np-westland-popup', className)}
       {...props}
     >
       <div className='np-westland-popup__body'>{children}</div>
-      {showCloseButton ? (
-        <button
-          type='button'
-          aria-label={closeLabel}
-          className='np-westland-popup__close'
-          onClick={handleClose}
-        >
-          <XIcon aria-hidden='true' />
-        </button>
-      ) : null}
+      {closeButtonTarget
+        ? createPortal(isOpen ? closeButton : null, closeButtonTarget)
+        : closeButton}
     </div>,
     content
   );

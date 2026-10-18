@@ -25,3 +25,6 @@ export type { ViewProps } from '@/features/mapping/components/View';
 export { YearMonthRangeListControl } from '@/features/mapping/components/YearMonthRangeListControl';
 export type { YearMonthRangeListControlProps } from '@/features/mapping/components/YearMonthRangeListControl';
 export { useOlMap } from '@/features/mapping/hooks/useOlMap';
+
+export { PersonalDetailsCard } from '@/features/forms/personal-details/components/PersonalDetailsCard';
+export type { PersonalDetailsCardProps } from '@/features/forms/personal-details/components/PersonalDetailsCard';

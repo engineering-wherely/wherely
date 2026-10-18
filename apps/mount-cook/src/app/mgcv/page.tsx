@@ -1,5 +1,7 @@
 'use client';
 
+import GetStartedControl from '@/app/mgcv/components/GetStartedControl';
+import PersonalDetailsCard from '@/app/mgcv/components/PersonalDetailsCard';
 import VectorLayer from '@/app/mgcv/components/VectorLayer';
 import YearMonthRangeListControl from '@/app/mgcv/components/YearMonthRangeListControl';
 import { MountCookMappingService } from '@/services/mapping/MountCookMappingService';
@@ -7,13 +9,12 @@ import store from '@/store';
 import {
   Controls,
   Drawer,
-  GetStartedControl,
   Layers,
   MapArtisan,
   MappingContextProvider,
   Popup,
 } from 'np-westland';
-import type { Coordinate } from 'np-westland/types';
+import type { Coordinate, Nullable } from 'np-westland/types';
 import type OlMap from 'ol/Map';
 import { useCallback, useMemo, useState } from 'react';
 import { useStore } from 'zustand';
@@ -21,6 +22,7 @@ import { useStore } from 'zustand';
 const GET_STARTED_CONTROL_INSET = 8;
 const GET_STARTED_CONTROL_SIZE = 48;
 const GET_STARTED_POPUP_GAP = 12;
+const GET_STARTED_POPUP_OPTIONS = { positioning: 'auto' };
 
 export default function Home() {
   const mappingService = useMemo(() => new MountCookMappingService(), []);
@@ -28,6 +30,10 @@ export default function Home() {
   const center = useStore(store, (s) => s.center);
   const projection = useStore(store, (s) => s.projection);
   const setCenter = useStore(store, (s) => s.setCenter);
+  const [
+    getStartedPopupCloseButtonTarget,
+    setGetStartedPopupCloseButtonTarget,
+  ] = useState<Nullable<HTMLDivElement>>(null);
   const [isGetStartedPopupOpen, setIsGetStartedPopupOpen] = useState(true);
 
   function onCenterChanged(c: Coordinate) {
@@ -45,7 +51,7 @@ export default function Home() {
         GET_STARTED_CONTROL_INSET -
         GET_STARTED_CONTROL_SIZE -
         GET_STARTED_POPUP_GAP,
-      GET_STARTED_CONTROL_INSET + GET_STARTED_CONTROL_SIZE / 2,
+      GET_STARTED_CONTROL_INSET,
     ]);
   }, []);
 
@@ -60,8 +66,6 @@ export default function Home() {
         >
           <Controls position="top-right">
             <GetStartedControl
-              firstName="Matthew"
-              lastName="Gong"
               onClick={() => {
                 setIsGetStartedPopupOpen(true);
               }}
@@ -71,12 +75,19 @@ export default function Home() {
 
           {isGetStartedPopupOpen ? (
             <Popup
+              className="np-westland-get-started-popup"
+              closeButtonTarget={getStartedPopupCloseButtonTarget}
+              popupOptions={GET_STARTED_POPUP_OPTIONS}
               coordinate={getGetStartedPopupCoordinate}
               defaultOpen={isGetStartedPopupOpen}
               onOpenChange={setIsGetStartedPopupOpen}
               updateOnPostRender
             >
-              Get started as Matthew Gong
+              <PersonalDetailsCard
+                headerActions={
+                  <div ref={setGetStartedPopupCloseButtonTarget} />
+                }
+              />
             </Popup>
           ) : null}
 

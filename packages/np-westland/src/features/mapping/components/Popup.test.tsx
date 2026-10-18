@@ -73,3 +73,49 @@ it('opens after the first usable frame and stays closed after dismissal', () => 
   expect(map.getOverlays().getLength()).toBe(0);
   map.dispose();
 });
+
+it('portals the close button, supports target changes, and preserves dismissal', () => {
+  vi.stubGlobal(
+    'ResizeObserver',
+    class {
+      observe() {}
+      unobserve() {}
+      disconnect() {}
+    }
+  );
+  const map = new OlMap({ controls: [], layers: [] });
+  const firstTarget = document.createElement('div');
+  const secondTarget = document.createElement('div');
+  const onOpenChange = vi.fn();
+  const view = (target?: HTMLElement, showCloseButton = true) => (
+    <OlMapContext value={map}>
+      <Popup
+        coordinate={[10, 20]}
+        closeButtonTarget={target}
+        showCloseButton={showCloseButton}
+        onOpenChange={onOpenChange}
+      >
+        Welcome
+      </Popup>
+    </OlMapContext>
+  );
+  const { rerender, unmount } = render(view(firstTarget));
+  const popup = map.getOverlays().item(0);
+  expect(within(firstTarget).getByRole('button', { name: 'Close popup' })).toBeTruthy();
+  expect(within(popup.getElement()!).queryByLabelText('Close popup')).toBeNull();
+  rerender(view(secondTarget));
+  expect(firstTarget.childElementCount).toBe(0);
+  expect(within(secondTarget).getByRole('button', { name: 'Close popup' })).toBeTruthy();
+  rerender(view(secondTarget, false));
+  expect(secondTarget.childElementCount).toBe(0);
+  rerender(view());
+  expect(within(popup.getElement()!).getByLabelText('Close popup')).toBeTruthy();
+  rerender(view(secondTarget));
+  fireEvent.click(within(secondTarget).getByRole('button', { name: 'Close popup' }));
+  expect(onOpenChange).toHaveBeenCalledWith(false);
+  expect(popup.getPosition()).toBeUndefined();
+  expect(secondTarget.childElementCount).toBe(0);
+  unmount();
+  expect(secondTarget.childElementCount).toBe(0);
+  map.dispose();
+});

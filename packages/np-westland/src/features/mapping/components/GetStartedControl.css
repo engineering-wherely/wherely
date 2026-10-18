@@ -3,3 +3,30 @@
 .np-westland-get-started-control {
   @apply absolute right-2 top-2;
 }
+
+/* Leave room for the control and keep long summaries inside the viewport. */
+.np-westland-popup.np-westland-get-started-popup {
+  align-items: flex-start;
+  width: min(28rem, calc(100vw - 6rem));
+  min-width: 0;
+  max-width: calc(100vw - 6rem);
+  max-height: calc(100dvh - 5rem);
+  padding-inline: 0.625rem;
+}
+
+.np-westland-get-started-popup .np-westland-popup__body {
+  max-height: calc(100dvh - 7rem);
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+
+/* Keep the open popup above neighbouring map controls. */
+.ol-overlaycontainer-stopevent > div:has(.np-westland-get-started-popup) {
+  z-index: 20;
+}
+
+/* Both start 8px from the top; point at the 48px button's centre. */
+.ol-popup-top.ol-popup-right.np-westland-popup-overlay .np-westland-get-started-popup::before {
+  top: 24px;
+  transform: translateY(-50%);
+}
