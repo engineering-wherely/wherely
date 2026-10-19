@@ -1,4 +1,3 @@
-import { values } from "mobx";
 import { observer } from "mobx-react-lite";
 import { types } from "mobx-state-tree";
 
@@ -56,7 +55,7 @@ const AppInternal = observer((props) => (
     <button onClick={(e) => props.store.addTodo(randomId(), "New Task")}>
       Add Task
     </button>
-    {values(props.store.todos).map((todo) => (
+    {Array.from(props.store.todos.values()).map((todo) => (
       <div key={todo.id}>
         <input
           type="checkbox"
