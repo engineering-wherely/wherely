@@ -1,9 +1,8 @@
 import { observable } from "mobx";
 import { observer } from "mobx-react";
-import * as React from "react";
 import { addMiddleware } from "mobx-state-tree";
-import { TodoStore } from "./models/TodoStore";
 import { TodoList } from "./components/TodoList";
+import { TodoStore } from "./models/TodoStore";
 
 const store = TodoStore.create({
   todos: [

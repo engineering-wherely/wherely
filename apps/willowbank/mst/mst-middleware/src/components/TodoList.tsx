@@ -1,4 +1,4 @@
-import { observable } from "mobx";
+import { action, observable } from "mobx";
 import { observer } from "mobx-react";
 import type { Instance } from "mobx-state-tree";
 import * as React from "react";
@@ -9,7 +9,7 @@ import { Todo } from "./Todo";
 export class TodoList extends React.Component<{
   todoStore: Instance<typeof TodoStore>;
 }> {
-  @observable newTodoTitle = "";
+  @observable accessor newTodoTitle = "";
 
   render() {
     const { todoStore } = this.props;
@@ -27,10 +27,12 @@ export class TodoList extends React.Component<{
     );
   }
 
+  @action
   handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     this.newTodoTitle = e.target.value;
   };
 
+  @action
   handleNewTodoClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     this.props.todoStore.addTodo(this.newTodoTitle);
