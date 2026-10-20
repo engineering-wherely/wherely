@@ -3,7 +3,7 @@ import { observer } from "mobx-react";
 import type { Instance } from "mobx-state-tree";
 import * as React from "react";
 import { TodoStore } from "../models/TodoStore";
-import { Todo } from "./Todo";
+import { TodoItem } from "./TodoItem";
 
 @observer
 export class TodoList extends React.Component<{
@@ -19,7 +19,7 @@ export class TodoList extends React.Component<{
         <button onClick={this.handleNewTodoClick}>Add</button>
         <ul>
           {todoStore.todos.map((todo) => (
-            <Todo todo={todo} key={todo.id} />
+            <TodoItem todo={todo} key={todo.id} />
           ))}
         </ul>
         Tasks left: {todoStore.unfinishedTodoCount}
