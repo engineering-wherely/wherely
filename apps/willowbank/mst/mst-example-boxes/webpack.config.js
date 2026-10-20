@@ -21,6 +21,12 @@ module.exports = {
   module: {
     rules: [
       {
+        // Allow dependencies' .mjs files to import named CommonJS exports in webpack 4.
+        test: /\.mjs$/,
+        include: /node_modules/,
+        type: "javascript/auto",
+      },
+      {
         test: /\.jsx?$/,
         loaders: ["babel-loader"],
         include: path.join(__dirname, "src"),
