@@ -5,26 +5,34 @@ type Task = {
 };
 
 const tasks: Task[] = [
-  { id: 1, title: "Learn React fundamentals", completed: false },
-  { id: 2, title: "Practice TypeScript", completed: true },
+  { id: 1, title: "Learn components", completed: true },
+  { id: 2, title: "Practice JSX", completed: false },
 ];
+
+function Header() {
+  return (
+    <header>
+      <h1>TaskFlow</h1>
+      <p>Manage your tasks clearly.</p>
+    </header>
+  );
+}
+
+function TaskSummary() {
+  const completed = tasks.filter((task) => task.completed).length;
+
+  return (
+    <p>
+      Completed {completed} of {tasks.length} tasks
+    </p>
+  );
+}
 
 export default function App() {
   return (
     <main>
-      <h1>TaskFlow</h1>
-      <p>Build better habits, one task a time.</p>
-
-      <h2>My Tasks</h2>
-
-      <ul>
-        {tasks.map((task) => (
-          <li key={task.id}>
-            {task.title}
-            {task.completed ? " ✓" : ""}
-          </li>
-        ))}
-      </ul>
+      <Header />
+      <TaskSummary />
     </main>
   );
 }
