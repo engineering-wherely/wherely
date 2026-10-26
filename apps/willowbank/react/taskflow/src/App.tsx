@@ -1,38 +1,41 @@
+type Priority = "low" | "medium" | "high";
+
 type Task = {
   id: number;
   title: string;
   completed: boolean;
+  priority: Priority;
 };
 
-const tasks: Task[] = [
-  { id: 1, title: "Learn components", completed: true },
-  { id: 2, title: "Practice JSX", completed: false },
-];
+type TaskItemProps = {
+  task: Task;
+  showPriority?: boolean;
+};
 
-function Header() {
+function TaskItem({ task, showPriority = true }: TaskItemProps) {
   return (
-    <header>
-      <h1>TaskFlow</h1>
-      <p>Manage your tasks clearly.</p>
-    </header>
-  );
-}
+    <li>
+      <strong>{task.title}</strong>
 
-function TaskSummary() {
-  const completed = tasks.filter((task) => task.completed).length;
+      {task.completed && <span>✓</span>}
 
-  return (
-    <p>
-      Completed {completed} of {tasks.length} tasks
-    </p>
+      {showPriority && <small> Priority: {task.priority}</small>}
+    </li>
   );
 }
 
 export default function App() {
+  const task: Task = {
+    id: 1,
+    title: "Practice typed props",
+    completed: false,
+    priority: "high",
+  };
+
   return (
     <main>
-      <Header />
-      <TaskSummary />
+      <h1>TaskFlow</h1>
+      <TaskItem task={task} showPriority={false} />
     </main>
   );
 }
