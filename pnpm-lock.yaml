@@ -460,6 +460,9 @@ importers:
       react-dom:
         specifier: ^19.3.1
         version: 19.3.1(react@19.3.1)
+      react-router:
+        specifier: ^8.5.1
+        version: 8.5.1(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
     devDependencies:
       '@eslint/js':
         specifier: ^10.0.1
@@ -5840,6 +5843,9 @@ packages:
   '@react-navigation/routers@7.6.5':
     resolution: {integrity: sha512-hpvpVFt6wu3U014F/0Qy45VZCErlUvIV8kN1L6HovN5P9OpbXAzFTaRQmG7VW6czg2tSkUL5S3dZA0HIu5QirQ==}
 
+  '@remix-run/route-pattern@0.22.1':
+    resolution: {integrity: sha512-czdGJWh09Lapvcqt7Vb09KlrU2PhRJ8xQaI+AItTuD9aDJ5MAgxnS38lnys6Ll+6RJEqPiaUqTwIQhVLwFvv+w==}
+
   '@rolldown/binding-android-arm-eabi@1.2.14':
     resolution: {integrity: sha512-aWR+XKH9+rW7m5fWq/5360J3mHycrx/o6xZM2DQFdJnTMdyP7/WzxPjhtLbVWdKo2y612/4U1bWqb3HQhiF7vg==}
     engines: {node: ^20.19.0 || >=22.12.0}
@@ -9357,6 +9363,9 @@ packages:
 
   convert-source-map@2.0.0:
     resolution: {integrity: sha512-Kvp459HrV2FEJ1CAsi1Ku+MY3kasH19TFykTz2xWmMeq6bk2NU3XXvfJ+Q61m0xktWwt+1HSYf3JZsTms3aRJg==}
+
+  cookie-es@3.1.1:
+    resolution: {integrity: sha512-UaXxwISYJPTr9hwQxMFYZ7kNhSXboMXP+Z3TRX6f1/NyaGPfuNUZOWP1pUEb75B2HjfklIYLVRfWiFZJyC6Npg==}
 
   cookie-signature@1.0.7:
     resolution: {integrity: sha512-NXdYc3dLr47pBkpUCHtKSwIOQXLVn8dZEuywboCOJY/osA0wFSLlSawr3KN8qXJEyX66FcONTH8EIlVuK0yyFA==}
@@ -15496,6 +15505,22 @@ packages:
       '@types/react':
         optional: true
 
+  react-router@8.5.1:
+    resolution: {integrity: sha512-5u1eQ46QjuXjNfEnLwzrnou1Bm5dquO3xjVYkkMYCudtkicD2AQHtx+fvXzPATtPJx8TW6DR1x1TDRqsfHyZBw==}
+    engines: {node: '>=22.22.0'}
+    peerDependencies:
+      '@types/react': '>=19.2.0'
+      '@types/react-dom': '>=19.2.0'
+      react: '>=19.2.7'
+      react-dom: '>=19.2.7'
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      '@types/react-dom':
+        optional: true
+      react-dom:
+        optional: true
+
   react-scripts@5.0.1:
     resolution: {integrity: sha512-8VAmEm/ZAwQzJ+GOMLbBsTdDKOpuZh7RPs0UymvBR2vRk4iZWCskjbFnxqjrzoIvlNNRZ3QJFx6/qDSi6zSnaQ==}
     engines: {node: '>=14.0.0'}
@@ -20283,7 +20308,7 @@ snapshots:
     dependencies:
       '@aws-crypto/sha256-browser': 5.2.0
       '@aws-crypto/sha256-js': 5.2.0
-      '@aws-sdk/client-sso-oidc': 3.624.0(@aws-sdk/client-sts@3.787.0)
+      '@aws-sdk/client-sso-oidc': 3.624.0(@aws-sdk/client-sts@3.624.0)
       '@aws-sdk/client-sts': 3.624.0
       '@aws-sdk/core': 3.624.0
       '@aws-sdk/credential-provider-node': 3.624.0(@aws-sdk/client-sso-oidc@3.624.0(@aws-sdk/client-sts@3.624.0))(@aws-sdk/client-sts@3.624.0)
@@ -20815,51 +20840,6 @@ snapshots:
       '@aws-crypto/sha256-browser': 5.2.0
       '@aws-crypto/sha256-js': 5.2.0
       '@aws-sdk/client-sts': 3.624.0
-      '@aws-sdk/core': 3.624.0
-      '@aws-sdk/credential-provider-node': 3.624.0(@aws-sdk/client-sso-oidc@3.624.0(@aws-sdk/client-sts@3.624.0))(@aws-sdk/client-sts@3.624.0)
-      '@aws-sdk/middleware-host-header': 3.620.0
-      '@aws-sdk/middleware-logger': 3.609.0
-      '@aws-sdk/middleware-recursion-detection': 3.620.0
-      '@aws-sdk/middleware-user-agent': 3.620.0
-      '@aws-sdk/region-config-resolver': 3.614.0
-      '@aws-sdk/types': 3.609.0
-      '@aws-sdk/util-endpoints': 3.614.0
-      '@aws-sdk/util-user-agent-browser': 3.609.0
-      '@aws-sdk/util-user-agent-node': 3.614.0
-      '@smithy/config-resolver': 3.0.13
-      '@smithy/core': 2.5.7
-      '@smithy/fetch-http-handler': 3.2.9
-      '@smithy/hash-node': 3.0.11
-      '@smithy/invalid-dependency': 3.0.11
-      '@smithy/middleware-content-length': 3.0.13
-      '@smithy/middleware-endpoint': 3.2.8
-      '@smithy/middleware-retry': 3.0.34
-      '@smithy/middleware-serde': 3.0.11
-      '@smithy/middleware-stack': 3.0.11
-      '@smithy/node-config-provider': 3.1.12
-      '@smithy/node-http-handler': 3.3.3
-      '@smithy/protocol-http': 4.1.8
-      '@smithy/smithy-client': 3.7.0
-      '@smithy/types': 3.7.2
-      '@smithy/url-parser': 3.0.11
-      '@smithy/util-base64': 3.0.0
-      '@smithy/util-body-length-browser': 3.0.0
-      '@smithy/util-body-length-node': 3.0.0
-      '@smithy/util-defaults-mode-browser': 3.0.34
-      '@smithy/util-defaults-mode-node': 3.0.34
-      '@smithy/util-endpoints': 2.1.7
-      '@smithy/util-middleware': 3.0.11
-      '@smithy/util-retry': 3.0.11
-      '@smithy/util-utf8': 3.0.0
-      tslib: 2.8.1
-    transitivePeerDependencies:
-      - aws-crt
-
-  '@aws-sdk/client-sso-oidc@3.624.0(@aws-sdk/client-sts@3.787.0)':
-    dependencies:
-      '@aws-crypto/sha256-browser': 5.2.0
-      '@aws-crypto/sha256-js': 5.2.0
-      '@aws-sdk/client-sts': 3.787.0
       '@aws-sdk/core': 3.624.0
       '@aws-sdk/credential-provider-node': 3.624.0(@aws-sdk/client-sso-oidc@3.624.0(@aws-sdk/client-sts@3.624.0))(@aws-sdk/client-sts@3.624.0)
       '@aws-sdk/middleware-host-header': 3.620.0
@@ -21739,7 +21719,7 @@ snapshots:
 
   '@aws-sdk/token-providers@3.614.0(@aws-sdk/client-sso-oidc@3.624.0(@aws-sdk/client-sts@3.624.0))':
     dependencies:
-      '@aws-sdk/client-sso-oidc': 3.624.0(@aws-sdk/client-sts@3.787.0)
+      '@aws-sdk/client-sso-oidc': 3.624.0(@aws-sdk/client-sts@3.624.0)
       '@aws-sdk/types': 3.609.0
       '@smithy/property-provider': 3.1.11
       '@smithy/shared-ini-file-loader': 3.1.12
@@ -26077,6 +26057,8 @@ snapshots:
   '@react-navigation/routers@7.6.5':
     dependencies:
       nanoid: 3.3.20
+
+  '@remix-run/route-pattern@0.22.1': {}
 
   '@rolldown/binding-android-arm-eabi@1.2.14':
     optional: true
@@ -30485,6 +30467,8 @@ snapshots:
 
   convert-source-map@2.0.0: {}
 
+  cookie-es@3.1.1: {}
+
   cookie-signature@1.0.7: {}
 
   cookie-signature@1.2.2: {}
@@ -31555,8 +31539,8 @@ snapshots:
       '@next/eslint-plugin-next': 16.2.4
       eslint: 9.25.0(jiti@2.7.0)
       eslint-import-resolver-node: 0.3.9
-      eslint-import-resolver-typescript: 3.10.0(eslint-plugin-import@2.32.0)(eslint@9.25.0(jiti@2.7.0))
-      eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.59.1(eslint@9.25.0(jiti@2.7.0))(typescript@5.8.3))(eslint-import-resolver-typescript@3.10.0)(eslint@9.25.0(jiti@2.7.0))
+      eslint-import-resolver-typescript: 3.10.0(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.59.1(eslint@9.25.0(jiti@2.7.0))(typescript@5.8.3))(eslint@9.25.0(jiti@2.7.0)))(eslint@9.25.0(jiti@2.7.0))
+      eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.59.1(eslint@9.25.0(jiti@2.7.0))(typescript@5.8.3))(eslint-import-resolver-typescript@3.10.0(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.59.1(eslint@9.25.0(jiti@2.7.0))(typescript@5.8.3))(eslint@9.25.0(jiti@2.7.0)))(eslint@9.25.0(jiti@2.7.0)))(eslint@9.25.0(jiti@2.7.0))
       eslint-plugin-jsx-a11y: 6.10.2(eslint@9.25.0(jiti@2.7.0))
       eslint-plugin-react: 7.37.5(eslint@9.25.0(jiti@2.7.0))
       eslint-plugin-react-hooks: 7.1.1(eslint@9.25.0(jiti@2.7.0))
@@ -31653,6 +31637,21 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  eslint-import-resolver-typescript@3.10.0(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.59.1(eslint@9.25.0(jiti@2.7.0))(typescript@5.8.3))(eslint@9.25.0(jiti@2.7.0)))(eslint@9.25.0(jiti@2.7.0)):
+    dependencies:
+      '@nolyfill/is-core-module': 1.0.39
+      debug: 4.4.3
+      eslint: 9.25.0(jiti@2.7.0)
+      get-tsconfig: 4.10.0
+      is-bun-module: 2.0.0
+      stable-hash: 0.0.5
+      tinyglobby: 0.2.16
+      unrs-resolver: 1.5.0
+    optionalDependencies:
+      eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.59.1(eslint@9.25.0(jiti@2.7.0))(typescript@5.8.3))(eslint-import-resolver-typescript@3.10.0(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.59.1(eslint@9.25.0(jiti@2.7.0))(typescript@5.8.3))(eslint@9.25.0(jiti@2.7.0)))(eslint@9.25.0(jiti@2.7.0)))(eslint@9.25.0(jiti@2.7.0))
+    transitivePeerDependencies:
+      - supports-color
+
   eslint-import-resolver-typescript@3.10.0(eslint-plugin-import@2.32.0(eslint@9.25.0(jiti@2.7.0)))(eslint@9.25.0(jiti@2.7.0)):
     dependencies:
       '@nolyfill/is-core-module': 1.0.39
@@ -31683,21 +31682,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-import-resolver-typescript@3.10.0(eslint-plugin-import@2.32.0)(eslint@9.25.0(jiti@2.7.0)):
-    dependencies:
-      '@nolyfill/is-core-module': 1.0.39
-      debug: 4.4.3
-      eslint: 9.25.0(jiti@2.7.0)
-      get-tsconfig: 4.10.0
-      is-bun-module: 2.0.0
-      stable-hash: 0.0.5
-      tinyglobby: 0.2.16
-      unrs-resolver: 1.5.0
-    optionalDependencies:
-      eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.59.1(eslint@9.25.0(jiti@2.7.0))(typescript@5.8.3))(eslint-import-resolver-typescript@3.10.0)(eslint@9.25.0(jiti@2.7.0))
-    transitivePeerDependencies:
-      - supports-color
-
   eslint-module-utils@2.12.1(@typescript-eslint/parser@5.62.0(eslint@8.57.1)(typescript@7.0.2))(eslint-import-resolver-node@0.3.9)(eslint@8.57.1):
     dependencies:
       debug: 3.2.7
@@ -31719,14 +31703,14 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-module-utils@2.12.1(@typescript-eslint/parser@8.59.1(eslint@9.25.0(jiti@2.7.0))(typescript@5.8.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.10.0)(eslint@9.25.0(jiti@2.7.0)):
+  eslint-module-utils@2.12.1(@typescript-eslint/parser@8.59.1(eslint@9.25.0(jiti@2.7.0))(typescript@5.8.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.10.0(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.59.1(eslint@9.25.0(jiti@2.7.0))(typescript@5.8.3))(eslint@9.25.0(jiti@2.7.0)))(eslint@9.25.0(jiti@2.7.0)))(eslint@9.25.0(jiti@2.7.0)):
     dependencies:
       debug: 3.2.7
     optionalDependencies:
       '@typescript-eslint/parser': 8.59.1(eslint@9.25.0(jiti@2.7.0))(typescript@5.8.3)
       eslint: 9.25.0(jiti@2.7.0)
       eslint-import-resolver-node: 0.3.9
-      eslint-import-resolver-typescript: 3.10.0(eslint-plugin-import@2.32.0)(eslint@9.25.0(jiti@2.7.0))
+      eslint-import-resolver-typescript: 3.10.0(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.59.1(eslint@9.25.0(jiti@2.7.0))(typescript@5.8.3))(eslint@9.25.0(jiti@2.7.0)))(eslint@9.25.0(jiti@2.7.0))
     transitivePeerDependencies:
       - supports-color
 
@@ -31815,7 +31799,7 @@ snapshots:
       - eslint-import-resolver-webpack
       - supports-color
 
-  eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.59.1(eslint@9.25.0(jiti@2.7.0))(typescript@5.8.3))(eslint-import-resolver-typescript@3.10.0)(eslint@9.25.0(jiti@2.7.0)):
+  eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.59.1(eslint@9.25.0(jiti@2.7.0))(typescript@5.8.3))(eslint-import-resolver-typescript@3.10.0(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.59.1(eslint@9.25.0(jiti@2.7.0))(typescript@5.8.3))(eslint@9.25.0(jiti@2.7.0)))(eslint@9.25.0(jiti@2.7.0)))(eslint@9.25.0(jiti@2.7.0)):
     dependencies:
       '@rtsao/scc': 1.1.0
       array-includes: 3.1.9
@@ -31826,7 +31810,7 @@ snapshots:
       doctrine: 2.1.0
       eslint: 9.25.0(jiti@2.7.0)
       eslint-import-resolver-node: 0.3.9
-      eslint-module-utils: 2.12.1(@typescript-eslint/parser@8.59.1(eslint@9.25.0(jiti@2.7.0))(typescript@5.8.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.10.0)(eslint@9.25.0(jiti@2.7.0))
+      eslint-module-utils: 2.12.1(@typescript-eslint/parser@8.59.1(eslint@9.25.0(jiti@2.7.0))(typescript@5.8.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.10.0(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.59.1(eslint@9.25.0(jiti@2.7.0))(typescript@5.8.3))(eslint@9.25.0(jiti@2.7.0)))(eslint@9.25.0(jiti@2.7.0)))(eslint@9.25.0(jiti@2.7.0))
       hasown: 2.0.2
       is-core-module: 2.16.1
       is-glob: 4.0.3
@@ -38222,6 +38206,16 @@ snapshots:
       use-sidecar: 1.1.3(@types/react@19.2.14)(react@19.2.5)
     optionalDependencies:
       '@types/react': 19.2.14
+
+  react-router@8.5.1(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1):
+    dependencies:
+      '@remix-run/route-pattern': 0.22.1
+      cookie-es: 3.1.1
+      react: 19.3.1
+    optionalDependencies:
+      '@types/react': 19.3.0
+      '@types/react-dom': 19.3.0(@types/react@19.3.0)
+      react-dom: 19.3.1(react@19.3.1)
 
   react-scripts@5.0.1(@babel/plugin-syntax-flow@7.26.0(@babel/core@7.29.7))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7))(@types/babel__core@7.20.5)(eslint@8.57.1)(react@19.3.1)(sass-embedded@1.100.0)(sass@1.100.0)(ts-node@10.9.2(@types/node@24.19.2)(typescript@7.0.2))(tsx@4.23.13)(type-fest@4.41.0)(typescript@7.0.2)(yaml@2.9.1):
     dependencies:
