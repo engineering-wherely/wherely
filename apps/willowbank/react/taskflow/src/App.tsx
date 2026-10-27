@@ -1,41 +1,59 @@
-type Priority = "low" | "medium" | "high";
+import { useReducer } from "react";
 
 type Task = {
   id: number;
   title: string;
   completed: boolean;
-  priority: Priority;
 };
 
-type TaskItemProps = {
-  task: Task;
-  showPriority?: boolean;
-};
+type TaskAction =
+  | {
+      type: "added";
+      task: Task;
+    }
+  | {
+      type: "toggled";
+      id: number;
+    }
+  | {
+      type: "deleted";
+      id: number;
+    };
 
-function TaskItem({ task, showPriority = true }: TaskItemProps) {
-  return (
-    <li>
-      <strong>{task.title}</strong>
-
-      {task.completed && <span>✓</span>}
-
-      {showPriority && <small> Priority: {task.priority}</small>}
-    </li>
-  );
+function tasksReducer(tasks: Task[], action: TaskAction): Task[] {
+  switch (action.type) {
+    case "added":
+      return [...tasks, action.task];
+    case "toggled":
+      return tasks.map((task) =>
+        task.id === action.id ? { ...task, completed: !task.completed } : task,
+      );
+    case "deleted":
+      return tasks.filter((task) => task.id !== action.id);
+  }
 }
 
-export default function App() {
-  const task: Task = {
+const initialTasks: Task[] = [
+  {
     id: 1,
-    title: "Practice typed props",
+    title: "Learn useReducer",
     completed: false,
-    priority: "high",
-  };
+  },
+];
+
+export default function App() {
+  const [tasks, dispatch] = useReducer(tasksReducer, initialTasks);
 
   return (
-    <main>
-      <h1>TaskFlow</h1>
-      <TaskItem task={task} showPriority={false} />
-    </main>
+    <ul>
+      {tasks.map((task) => (
+        <li key={task.id}>
+          <button onClick={() => dispatch({ type: "toggled", id: task.id })}>
+            {task.completed ? "✓ " : ""}
+            {task.title}
+          </button>
+        </li>
+      ))}
+    </ul>
   );
 }
