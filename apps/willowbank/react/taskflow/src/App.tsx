@@ -1,59 +1,18 @@
-import { useReducer } from "react";
+import { useState } from "react";
 
-type Task = {
-  id: number;
-  title: string;
-  completed: boolean;
-};
-
-type TaskAction =
-  | {
-      type: "added";
-      task: Task;
-    }
-  | {
-      type: "toggled";
-      id: number;
-    }
-  | {
-      type: "deleted";
-      id: number;
-    };
-
-function tasksReducer(tasks: Task[], action: TaskAction): Task[] {
-  switch (action.type) {
-    case "added":
-      return [...tasks, action.task];
-    case "toggled":
-      return tasks.map((task) =>
-        task.id === action.id ? { ...task, completed: !task.completed } : task,
-      );
-    case "deleted":
-      return tasks.filter((task) => task.id !== action.id);
-  }
-}
-
-const initialTasks: Task[] = [
-  {
-    id: 1,
-    title: "Learn useReducer",
-    completed: false,
-  },
-];
-
-export default function App() {
-  const [tasks, dispatch] = useReducer(tasksReducer, initialTasks);
+export default function TaskForm() {
+  const [title, setTitle] = useState("");
 
   return (
-    <ul>
-      {tasks.map((task) => (
-        <li key={task.id}>
-          <button onClick={() => dispatch({ type: "toggled", id: task.id })}>
-            {task.completed ? "✓ " : ""}
-            {task.title}
-          </button>
-        </li>
-      ))}
-    </ul>
+    <form>
+      <label htmlFor="title">Task title</label>
+      <input
+        id="title"
+        name="title"
+        value={title}
+        onChange={(event) => setTitle(event.target.value)}
+      />
+      <p>{title.length} characters</p>
+    </form>
   );
 }
