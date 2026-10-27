@@ -1,53 +1,67 @@
-import { useActionState } from "react";
+import { useOptimistic } from "react";
+import { useFormStatus } from "react-dom";
+import { useState } from "react";
 
-type FormState = {
-  message: string;
-  success: boolean;
+type Task = {
+  id: number;
+  title: string;
 };
 
-const initialState: FormState = {
-  message: "",
-  success: false,
-};
-
-async function createTask(
-  _previousState: FormState,
-  formData: FormData,
-): Promise<FormState> {
-  const title = String(formData.get("title") ?? "").trim();
-
-  if (title.length < 3) {
-    return {
-      message: "Enter at least 3 characters",
-      success: false,
-    };
-  }
-
-  await new Promise((resolve) => setTimeout(resolve, 500));
-
-  return {
-    message: `Created: ${title}`,
-    success: true,
-  };
+function SubmitButton() {
+  const { pending } = useFormStatus();
+  return (
+    <button type="submit" disabled={pending}>
+      {pending ? "Adding..." : "Add Task"}
+    </button>
+  );
 }
 
-export default function TaskForm() {
-  const [state, formAction, isPending] = useActionState(
-    createTask,
-    initialState,
+async function saveTask(title: string) {
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+
+  console.log(`Saved: ${title}`);
+}
+
+function TaskList({ tasks }: { tasks: Task[] }) {
+  const [optimisticTasks, addOptimisticTask] = useOptimistic(
+    tasks,
+    (current, newTask: Task) => [...current, newTask],
   );
+
+  async function addTaskAction(formData: FormData) {
+    const title = String(formData.get("title") ?? "").trim();
+
+    if (!title) {
+      return;
+    }
+
+    addOptimisticTask({ id: Date.now(), title });
+
+    await saveTask(title);
+  }
 
   return (
-    <form action={formAction}>
-      <label htmlFor="title">Task title</label>
-
-      <input id="title" name="title" required minLength={3} />
-
-      <button type="submit" disabled={isPending}>
-        {isPending ? "Adding..." : "Add Task"}
-      </button>
-
-      {state.message && <p aria-live="polite">{state.message}</p>}
-    </form>
+    <>
+      <form action={addTaskAction}>
+        <input name="title" required placeholder="New task" />
+        <SubmitButton />
+        <ul>
+          {optimisticTasks.map((task) => (
+            <li key={task.id}>{task.title}</li>
+          ))}
+        </ul>
+      </form>
+    </>
   );
+}
+
+export default function App() {
+  const [tasks] = useState<Task[]>([
+    {
+      id: 1,
+      title: "Learn React 19 form",
+    },
+  ]);
+
+  return <TaskList tasks={tasks} />;
 }
