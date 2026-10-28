@@ -1,30 +1,44 @@
-import { Link, Route, Routes } from "react-router";
-import HomePage from "./HomePage";
-import SettingsPage from "./SettingsPage";
-import TasksPage from "./TasksPage";
-import { ErrorBoundary } from "./ErrorBoundary";
-import { useLocation } from "react-router";
+import { startTransition, useState, ViewTransition } from "react";
 
-export default function App() {
-  const location = useLocation();
+type Task = {
+  id: number;
+  title: string;
+};
+
+export function TaskPreview({ task }: { task: Task }) {
+  const [open, setOpen] = useState(false);
+
+  function toggleDetails() {
+    startTransition(() => {
+      setOpen((current) => !current);
+    });
+  }
 
   return (
     <>
-      <nav>
-        <Link to="/">Home</Link>
-        {"|"}
-        <Link to="/tasks">Tasks</Link>
-        {"|"}
-        <Link to="/settings">Settings</Link>
-      </nav>
+      <button onClick={toggleDetails}>
+        {open ? "Hide Details" : "Show Details"}
+      </button>
 
-      <ErrorBoundary key={location.pathname}>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/tasks" element={<TasksPage />} />
-          <Route path="/settings" element={<SettingsPage />} />
-        </Routes>
-      </ErrorBoundary>
+      {open && (
+        <ViewTransition enter="auto" exit="auto">
+          <article>
+            <h2>{task.title}</h2>
+            <p>Task details appear here.</p>
+          </article>
+        </ViewTransition>
+      )}
+
+      {/* {open && (
+        <article>
+          <h2>{task.title}</h2>
+          <p>Task details appear here.</p>
+        </article>
+      )} */}
     </>
   );
+}
+
+export default function App() {
+  return <TaskPreview task={{ id: 1, title: "Learn React 19 features" }} />;
 }
