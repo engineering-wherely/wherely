@@ -12,5 +12,14 @@ export default defineConfig({
   test: {
     environment: "jsdom",
     setupFiles: "./src/test/setup.ts",
+    deps: {
+      optimizer: {
+        client: {
+          enabled: true,
+          // Apply React deduplication inside the hoisted test renderer too.
+          include: ["@testing-library/react"],
+        },
+      },
+    },
   },
 });
