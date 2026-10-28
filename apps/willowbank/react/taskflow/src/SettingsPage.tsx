@@ -1,3 +1,4 @@
 export default function SettingsPage() {
-  return <h1>Settings</h1>
+  throw new Error("Settings has not been implemented");
+  return <h1>Settings</h1>;
 }
