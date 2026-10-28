@@ -3,8 +3,11 @@ import HomePage from "./HomePage";
 import SettingsPage from "./SettingsPage";
 import TasksPage from "./TasksPage";
 import { ErrorBoundary } from "./ErrorBoundary";
+import { useLocation } from "react-router";
 
 export default function App() {
+  const location = useLocation();
+
   return (
     <>
       <nav>
@@ -15,7 +18,7 @@ export default function App() {
         <Link to="/settings">Settings</Link>
       </nav>
 
-      <ErrorBoundary>
+      <ErrorBoundary key={location.pathname}>
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/tasks" element={<TasksPage />} />
