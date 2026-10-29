@@ -1,44 +1,17 @@
-import { startTransition, useState, ViewTransition } from "react";
-
-type Task = {
-  id: number;
-  title: string;
-};
-
-export function TaskPreview({ task }: { task: Task }) {
-  const [open, setOpen] = useState(false);
-
-  function toggleDetails() {
-    startTransition(() => {
-      setOpen((current) => !current);
-    });
-  }
-
-  return (
-    <>
-      <button onClick={toggleDetails}>
-        {open ? "Hide Details" : "Show Details"}
-      </button>
-
-      {open && (
-        <ViewTransition enter="auto" exit="auto">
-          <article>
-            <h2>{task.title}</h2>
-            <p>Task details appear here.</p>
-          </article>
-        </ViewTransition>
-      )}
-
-      {/* {open && (
-        <article>
-          <h2>{task.title}</h2>
-          <p>Task details appear here.</p>
-        </article>
-      )} */}
-    </>
-  );
-}
+import { Route, Routes } from "react-router";
+import { AppLayout } from "./components/AppLayout";
+import { HomePage } from "./pages/HomePage";
+import { TasksPage } from "./pages/TasksPage";
+import { NotFoundPage } from "./pages/NotFoundPage";
 
 export default function App() {
-  return <TaskPreview task={{ id: 1, title: "Learn React 19 features" }} />;
+  return (
+    <Routes>
+      <Route element={<AppLayout />}>
+        <Route index element={<HomePage />} />
+        <Route path="tasks" element={<TasksPage />} />
+        <Route path="" element={<NotFoundPage />} />
+      </Route>
+    </Routes>
+  );
 }
