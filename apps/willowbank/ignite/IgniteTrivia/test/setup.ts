@@ -11,7 +11,11 @@ jest.doMock("react-native", () => {
     {
       Image: {
         ...ReactNative.Image,
-        resolveAssetSource: jest.fn((_source) => mockFile), // eslint-disable-line @typescript-eslint/no-unused-vars
+        // Preserve the transformer hooks used by expo-asset during initialization.
+        resolveAssetSource: Object.assign(
+          jest.fn((_source) => mockFile), // eslint-disable-line @typescript-eslint/no-unused-vars
+          ReactNative.Image.resolveAssetSource,
+        ),
         getSize: jest.fn(
           (
             uri: string, // eslint-disable-line @typescript-eslint/no-unused-vars

@@ -21,8 +21,8 @@
       "dom"
     ],
     "skipLibCheck": true,
+    "types": ["jest"],
     "resolveJsonModule": true,
-    "baseUrl": ".",
     "paths": {
       "@/*": [
         "./app/*"
@@ -31,10 +31,6 @@
         "./assets/*"
       ]
     },
-    "typeRoots": [
-      "./node_modules/@types",
-      "./types"
-    ]
   },
   "ts-node": {
     "compilerOptions": {
